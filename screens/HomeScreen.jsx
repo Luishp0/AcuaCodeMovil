@@ -14,6 +14,7 @@ const HomeScreen = ({ navigation }) => {
       <Text style={tw`text-lg text-center mb-5`}>
         Aquí puedes ver la información y navegar a otras secciones de la aplicación.
       </Text>
+      <Button title="Actualizar Información" onPress={() => navigation.navigate('UpdateUser')} />
       <Button title="Cerrar sesión" onPress={handleLogout} />
     </View>
   );
