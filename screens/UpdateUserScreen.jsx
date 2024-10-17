@@ -1,15 +1,29 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, Platform, Button } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, TextInput, TouchableOpacity, Platform } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import tw from 'twrnc';
 
 const UpdateUserScreen = ({ navigation }) => {
-  const [nombre, setNombre] = useState('Luis');
-  const [telefono, setTelefono] = useState('3334501916');
-  const [correo, setCorreo] = useState('luis.hernandez.s21@utzmg.edu.com');
-  const [contrasena, setContrasena] = useState('********');
+  const [nombre, setNombre] = useState('');
+  const [telefono, setTelefono] = useState('');
+  const [correo, setCorreo] = useState('');
   const [fecha, setFecha] = useState(new Date());
   const [showDatePicker, setShowDatePicker] = useState(false);
+
+  useEffect(() => {
+    const loadUserData = async () => {
+      const userData = await AsyncStorage.getItem('userData');
+      if (userData) {
+        const { nombre, telefono, correo, fechaNacimiento } = JSON.parse(userData);
+        setNombre(nombre);
+        setTelefono(telefono);
+        setCorreo(correo);
+        setFecha(new Date(fechaNacimiento));
+      }
+    };
+    loadUserData();
+  }, []);
 
   const handleSave = () => {
     alert('Información actualizada');
@@ -23,7 +37,6 @@ const UpdateUserScreen = ({ navigation }) => {
 
   return (
     <View style={tw`flex-1 bg-gray-100 p-5`}>
-      {/* Botón para regresar al inicio */}
       <TouchableOpacity onPress={() => navigation.goBack()} style={tw`mb-5`}>
         <Text style={tw`text-blue-500`}>Regresar</Text>
       </TouchableOpacity>
@@ -51,15 +64,6 @@ const UpdateUserScreen = ({ navigation }) => {
         keyboardType="email-address"
       />
 
-      <TextInput
-        style={tw`border border-blue-500 rounded-lg p-3 mb-4`}
-        value={contrasena}
-        onChangeText={setContrasena}
-        placeholder="Contraseña"
-        secureTextEntry
-      />
-
-      {/* Campo para la fecha de nacimiento con DatePicker */}
       <TouchableOpacity onPress={() => setShowDatePicker(true)} style={tw`border border-blue-500 rounded-lg p-3 mb-4`}>
         <Text style={tw`text-gray-600`}>
           {fecha ? fecha.toLocaleDateString() : 'Fecha de Nacimiento'}

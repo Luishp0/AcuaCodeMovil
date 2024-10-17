@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, Button, Alert } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import tw from 'twrnc';
 
 const LoginScreen = ({ navigation }) => {
@@ -22,8 +23,13 @@ const LoginScreen = ({ navigation }) => {
       const result = await response.json();
       if (response.ok) {
         Alert.alert('Inicio de sesión exitoso');
-        // Redirecciona al usuario a la pantalla principal
-        navigation.navigate('Home'); // Ajusta el nombre de la pantalla de destino
+
+        // Almacena el token y datos del usuario en AsyncStorage
+        await AsyncStorage.setItem('userToken', result.result.token);
+        await AsyncStorage.setItem('userData', JSON.stringify(result.result));
+
+        // Navega a UpdateUserScreen con los datos cargados
+        navigation.navigate('Home');
       } else {
         Alert.alert('Error en el inicio de sesión', result.message || 'Usuario o contraseña incorrectos');
       }
