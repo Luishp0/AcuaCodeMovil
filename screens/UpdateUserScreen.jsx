@@ -3,6 +3,8 @@ import { View, Text, TextInput, TouchableOpacity, Platform, Alert } from 'react-
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import tw from 'twrnc';
+import Navbar from '../assets/NavBar'; // Ajusta la ruta según tu estructura
+
 
 const UpdateUserScreen = ({ navigation }) => {
   const [nombre, setNombre] = useState('');
@@ -90,10 +92,10 @@ const UpdateUserScreen = ({ navigation }) => {
   };
 
   return (
-    <View style={tw`flex-1 bg-gray-100 p-5`}>
-      <TouchableOpacity onPress={() => navigation.goBack()} style={tw`mb-5`}>
-        <Text style={tw`text-blue-500`}>Regresar</Text>
-      </TouchableOpacity>
+    <View style={tw`flex-1`}>
+      {/* Incluir el Navbar */}
+      <Navbar navigation={navigation} />
+      
 
       <TextInput
         style={tw`border border-blue-500 rounded-lg p-3 mb-4`}
