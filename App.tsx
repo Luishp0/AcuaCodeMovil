@@ -6,6 +6,8 @@ import RegisterScreen from './screens/RegisterScreen.jsx';
 import HomeScreen from './screens/HomeScreen.jsx';
 import UpdateUserScreen from './screens/UpdateUserScreen.jsx';
 import CalendarScreen from './screens/CalendarScreen.jsx';
+import SubstancesScreen from './screens/SubstancesScreem.jsx';
+import ConfigurationScreen from './screens/ConfigurationScreen.jsx';
 
 const Stack = createStackNavigator();
 
@@ -18,6 +20,8 @@ const App = () => {
         <Stack.Screen name="Home" component={HomeScreen}/>
         <Stack.Screen name='UpdateUser' component={UpdateUserScreen}/>
         <Stack.Screen name='Calendar' component={CalendarScreen}/>
+        <Stack.Screen name='Substances' component={SubstancesScreen}/>
+        <Stack.Screen name='Settings' component={ConfigurationScreen}/>
       </Stack.Navigator>
     </NavigationContainer>
   );
