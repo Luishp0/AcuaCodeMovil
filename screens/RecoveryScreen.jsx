@@ -1,4 +1,4 @@
-// RecuperacionScreen.jsx
+// RecoveryScreen.jsx
 import React, { useState } from 'react';
 import { View, Text, TextInput, Button, Alert } from 'react-native';
 import tw from 'twrnc';
@@ -19,6 +19,7 @@ const RecoveryScreen = ({ navigation }) => {
       const result = await response.json();
       if (response.ok) {
         Alert.alert('Enlace de recuperación enviado', `Revisa tu correo ${email}`);
+        navigation.navigate('Verification', { email }); // Pasa el correo a VerificationScreen
       } else {
         Alert.alert('Error', result.message || 'No se pudo enviar el enlace de recuperación');
       }

@@ -10,6 +10,7 @@ import CalendarScreen from './screens/CalendarScreen';
 import SubstancesScreen from './screens/SubstancesScreen';
 import SettingsScreen from './screens/SettingsScreen';
 import RecoveryScreen from './screens/RecoveryScreen';
+import VerificationScreen from './screens/VerificationScreen';
 
 const Stack = createStackNavigator();
 
@@ -26,6 +27,8 @@ const App = () => {
           <Stack.Screen name="Substances" component={SubstancesScreen} />
 
           <Stack.Screen name='Recovery' component={RecoveryScreen}/>
+          <Stack.Screen name='Verification' component={VerificationScreen}/>
+
           <Stack.Screen 
             name="Settings" 
             component={SettingsScreen} 
