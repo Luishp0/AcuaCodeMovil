@@ -6,9 +6,25 @@ import tw from 'twrnc';
 const RecoveryScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
 
-  const handlePasswordReset = () => {
-    // Implementa aquí tu lógica para el restablecimiento de contraseña
-    Alert.alert('Enlace de recuperación enviado', `Revisa tu correo ${email}`);
+  const handlePasswordReset = async () => {
+    try {
+      const response = await fetch('http://10.0.2.2:8000/usuario/enviarcorreo', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ correo: email }),
+      });
+
+      const result = await response.json();
+      if (response.ok) {
+        Alert.alert('Enlace de recuperación enviado', `Revisa tu correo ${email}`);
+      } else {
+        Alert.alert('Error', result.message || 'No se pudo enviar el enlace de recuperación');
+      }
+    } catch (error) {
+      Alert.alert('Error de conexión', error.message);
+    }
   };
 
   return (
