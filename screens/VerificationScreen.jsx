@@ -32,10 +32,13 @@ const VerificationScreen = ({ navigation, route }) => {
       });
 
       const result = await response.json();
+      console.log('Route params:', route?.params);
 
       if (response.ok) {
         Alert.alert('Código verificado correctamente');
-        navigation.navigate('Home'); // Cambia a la pantalla deseada
+        navigation.navigate('Reset',{email}); // Cambia a la pantalla deseada
+        
+
       } else {
         Alert.alert('Código incorrecto', result.error || 'El código ingresado es incorrecto.');
       }

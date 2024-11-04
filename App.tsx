@@ -11,6 +11,7 @@ import SubstancesScreen from './screens/SubstancesScreen';
 import SettingsScreen from './screens/SettingsScreen';
 import RecoveryScreen from './screens/RecoveryScreen';
 import VerificationScreen from './screens/VerificationScreen';
+import ResetPasswordScreen from './screens/ResetPasswordScreen';
 
 const Stack = createStackNavigator();
 
@@ -18,7 +19,7 @@ const App = () => {
   return (
     <SettingsProvider>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="Login">
+        <Stack.Navigator initialRouteName="Recovery">
           <Stack.Screen name="Login" component={LoginScreen} />
           <Stack.Screen name="Register" component={RegisterScreen} />
           <Stack.Screen name="Home" component={HomeScreen} />
@@ -27,7 +28,9 @@ const App = () => {
           <Stack.Screen name="Substances" component={SubstancesScreen} />
 
           <Stack.Screen name='Recovery' component={RecoveryScreen}/>
+          
           <Stack.Screen name='Verification' component={VerificationScreen}/>
+          <Stack.Screen name='Reset' component={ResetPasswordScreen}/>
 
           <Stack.Screen 
             name="Settings" 
