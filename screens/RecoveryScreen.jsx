@@ -15,18 +15,23 @@ const RecoveryScreen = ({ navigation }) => {
         },
         body: JSON.stringify({ correo: email }),
       });
-
+  
+      console.log("Response Status:", response.status);
+  
       const result = await response.json();
       if (response.ok) {
         Alert.alert('Enlace de recuperación enviado', `Revisa tu correo ${email}`);
-        navigation.navigate('Verification', { email }); // Pasa el correo a VerificationScreen
+        navigation.navigate('Verification', { email });
       } else {
+        console.log("Server Response:", result); // Muestra la respuesta en consola
         Alert.alert('Error', result.message || 'No se pudo enviar el enlace de recuperación');
       }
     } catch (error) {
+      console.log("Fetch error:", error);
       Alert.alert('Error de conexión', error.message);
     }
   };
+  
 
   return (
     <View style={tw`flex-1 justify-center px-4`}>
