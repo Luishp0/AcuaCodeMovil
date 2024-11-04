@@ -1,21 +1,18 @@
-// VerificationScreen.jsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, Button, Alert, TouchableOpacity } from 'react-native';
 import tw from 'twrnc';
 
 const VerificationScreen = ({ navigation, route }) => {
-  const { email } = route.params; // Recibe el correo electrónico como parámetro de navegación
+  const { email } = route.params;
   const [code, setCode] = useState(['', '', '', '']);
-  const [timer, setTimer] = useState(150); // Tiempo de expiración en segundos (2:30)
+  const [timer, setTimer] = useState(150);
 
-  // Maneja los cambios en el código
   const handleCodeChange = (index, value) => {
     const newCode = [...code];
     newCode[index] = value;
     setCode(newCode);
   };
 
-  // Lógica para manejar la verificación del código
   const handleVerify = async () => {
     const enteredCode = code.join('');
 
@@ -32,13 +29,10 @@ const VerificationScreen = ({ navigation, route }) => {
       });
 
       const result = await response.json();
-      console.log('Route params:', route?.params);
 
       if (response.ok) {
         Alert.alert('Código verificado correctamente');
-        navigation.navigate('Reset',{email}); // Cambia a la pantalla deseada
-        
-
+        navigation.navigate('Reset', { email });
       } else {
         Alert.alert('Código incorrecto', result.error || 'El código ingresado es incorrecto.');
       }
@@ -47,8 +41,8 @@ const VerificationScreen = ({ navigation, route }) => {
     }
   };
 
-  // Función para manejar el temporizador (opcional)
-  React.useEffect(() => {
+  // Actualizar el temporizador
+  useEffect(() => {
     const interval = setInterval(() => {
       setTimer((prev) => (prev > 0 ? prev - 1 : 0));
     }, 1000);
@@ -59,6 +53,30 @@ const VerificationScreen = ({ navigation, route }) => {
     const minutes = Math.floor(seconds / 60);
     const secs = seconds % 60;
     return `${minutes}:${secs < 10 ? '0' : ''}${secs}`;
+  };
+
+  // Función para reenviar el código
+  const handleResendCode = async () => {
+    try {
+      const response = await fetch('http://10.0.2.2:8000/usuario/reenviarcodigo', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ correo: email }),
+      });
+
+      const result = await response.json();
+
+      if (response.ok) {
+        Alert.alert('Código reenviado', 'Hemos enviado un nuevo código de verificación.');
+        setTimer(150); // Restablece el temporizador a 2:30
+      } else {
+        Alert.alert('Error al reenviar', result.error || 'No se pudo reenviar el código.');
+      }
+    } catch (error) {
+      Alert.alert('Error de conexión:', error.message);
+    }
   };
 
   return (
@@ -87,7 +105,7 @@ const VerificationScreen = ({ navigation, route }) => {
 
       <Button title="Verificar" onPress={handleVerify} color="#1DA1F2" />
 
-      <TouchableOpacity onPress={() => Alert.alert('Código reenviado')}>
+      <TouchableOpacity onPress={handleResendCode}>
         <Text style={tw`text-blue-500 text-center mt-4`}>Enviar de Nuevo</Text>
       </TouchableOpacity>
     </View>
