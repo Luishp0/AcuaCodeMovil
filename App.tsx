@@ -19,7 +19,7 @@ const App = () => {
   return (
     <SettingsProvider>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="Recovery">
+        <Stack.Navigator initialRouteName="Home">
           <Stack.Screen name="Login" component={LoginScreen} />
           <Stack.Screen name="Register" component={RegisterScreen} />
           <Stack.Screen name="Home" component={HomeScreen} />
@@ -28,7 +28,7 @@ const App = () => {
           <Stack.Screen name="Substances" component={SubstancesScreen} />
 
           <Stack.Screen name='Recovery' component={RecoveryScreen}/>
-          
+
           <Stack.Screen name='Verification' component={VerificationScreen}/>
           <Stack.Screen name='Reset' component={ResetPasswordScreen}/>
 
