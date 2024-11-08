@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, TouchableOpacity, Platform, Alert } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, Platform, Alert, Image } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import tw from 'twrnc';
 import Navbar from '../assets/NavBar'; // Ajusta la ruta según tu estructura
-
+import { launchImageLibrary } from 'react-native-image-picker';
 
 const UpdateUserScreen = ({ navigation }) => {
   const [nombre, setNombre] = useState('');
@@ -15,6 +15,7 @@ const UpdateUserScreen = ({ navigation }) => {
   const [initialData, setInitialData] = useState({});
   const [hasChanges, setHasChanges] = useState(false);
   const [userId, setUserId] = useState(null); // Para guardar el ID del usuario
+  const [profileImage, setProfileImage] = useState(null); // Estado para la imagen de perfil
 
   useEffect(() => {
     const loadUserData = async () => {
@@ -33,7 +34,6 @@ const UpdateUserScreen = ({ navigation }) => {
   }, []);
 
   useEffect(() => {
-    // Formato para evitar problemas con la fecha
     const initialDateFormatted = initialData.fechaNacimiento
       ? new Date(initialData.fechaNacimiento).toISOString().slice(0, 10)
       : null;
@@ -46,6 +46,14 @@ const UpdateUserScreen = ({ navigation }) => {
       currentDateFormatted !== initialDateFormatted
     );
   }, [nombre, telefono, correo, fecha, initialData]);
+
+  const handleImagePick = () => {
+    launchImageLibrary({ mediaType: 'photo' }, (response) => {
+      if (response.assets && response.assets.length > 0) {
+        setProfileImage(response.assets[0].uri);
+      }
+    });
+  };
 
   const handleSave = async () => {
     try {
@@ -65,17 +73,16 @@ const UpdateUserScreen = ({ navigation }) => {
 
       if (response.ok) {
         Alert.alert('Éxito', 'Información actualizada correctamente');
-        // Actualizar AsyncStorage con los nuevos datos
         const updatedData = {
           nombre,
           telefono,
           correo,
           fechaNacimiento: fecha.toISOString(),
-          roles_idroles: 2, // Incluir roles_idroles en los datos guardados
+          roles_idroles: 2,
         };
         await AsyncStorage.setItem('userData', JSON.stringify(updatedData));
-        setInitialData(updatedData); // Actualizar los datos iniciales
-        setHasChanges(false); // Desactivar el botón de guardar
+        setInitialData(updatedData);
+        setHasChanges(false);
       } else {
         const result = await response.json();
         Alert.alert('Error', result.message || 'No se pudo actualizar la información');
@@ -93,9 +100,20 @@ const UpdateUserScreen = ({ navigation }) => {
 
   return (
     <View style={tw`flex-1`}>
-      {/* Incluir el Navbar */}
       <Navbar navigation={navigation} />
-      
+
+      <TouchableOpacity onPress={handleImagePick} style={tw`items-center mb-4`}>
+        {profileImage ? (
+          <Image
+            source={{ uri: profileImage }}
+            style={tw`w-44 h-44 rounded-full border-2 border-blue-500`}
+          />
+        ) : (
+          <View style={tw`w-24 h-24 rounded-full border-2 border-blue-500 bg-gray-300 items-center justify-center`}>
+            <Text style={tw`text-gray-600`}>Agregar Imagen</Text>
+          </View>
+        )}
+      </TouchableOpacity>
 
       <TextInput
         style={tw`border border-blue-500 rounded-lg p-3 mb-4`}
@@ -137,11 +155,11 @@ const UpdateUserScreen = ({ navigation }) => {
 
       <TouchableOpacity
         style={[
-          tw`rounded-lg py-3 items-center`, 
+          tw`rounded-lg py-3 items-center`,
           hasChanges ? tw`bg-blue-500` : tw`bg-gray-400`
         ]}
         onPress={handleSave}
-        disabled={!hasChanges} // Desactivar el botón si no hay cambios
+        disabled={!hasChanges}
       >
         <Text style={tw`text-white text-lg font-semibold`}>
           {hasChanges ? 'Guardar' : 'Sin cambios'}
