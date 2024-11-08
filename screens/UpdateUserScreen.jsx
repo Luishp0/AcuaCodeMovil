@@ -47,10 +47,42 @@ const UpdateUserScreen = ({ navigation }) => {
     );
   }, [nombre, telefono, correo, fecha, initialData]);
 
+  const handleUploadImage = async (formData) => {
+    try {
+      const response = await fetch('http://10.0.2.2:8000/imagen/subir', {
+        method: 'POST', // Usa POST o PUT según lo necesites
+        body: formData, // No incluyas el encabezado 'Content-Type'
+      });
+  
+      if (response.ok) {
+        Alert.alert('Éxito', 'Imagen cargada correctamente');
+      } else {
+        const result = await response.json();
+        Alert.alert('Error', result.message || 'No se pudo cargar la imagen');
+      }
+    } catch (error) {
+      Alert.alert('Error de conexión', error.message);
+    }
+  };
+  
+  
+
   const handleImagePick = () => {
     launchImageLibrary({ mediaType: 'photo' }, (response) => {
       if (response.assets && response.assets.length > 0) {
-        setProfileImage(response.assets[0].uri);
+        const selectedImage = response.assets[0];
+        setProfileImage(selectedImage.uri); // Actualizar el estado de la imagen
+  
+        // Crear un objeto FormData para enviar al servidor
+        const formData = new FormData();
+        formData.append('image', {
+          uri: selectedImage.uri,
+          type: selectedImage.type, // Tipo de archivo (e.g., 'image/jpeg')
+          name: selectedImage.fileName || `image.${selectedImage.type.split('/')[1]}`, // Nombre de archivo
+        });
+  
+        // Llamar a la función para subir la imagen
+        handleUploadImage(formData);
       }
     });
   };
@@ -97,6 +129,8 @@ const UpdateUserScreen = ({ navigation }) => {
     setShowDatePicker(Platform.OS === 'ios');
     setFecha(currentDate);
   };
+
+  
 
   return (
     <View style={tw`flex-1`}>
