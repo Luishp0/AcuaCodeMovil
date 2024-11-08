@@ -2,18 +2,13 @@ import React from 'react';
 import { View, Text } from 'react-native';
 import tw from 'twrnc';
 import Navbar from '../assets/NavBar'; // Ajusta la ruta según tu estructura
-import Header from '../assets/Header'; // Ajusta la ruta según tu estructura
 
 const HomeScreen = ({ navigation }) => {
   
-  const toggleNavbar = () => {
-    // Lógica para abrir/cerrar el navbar
-  };
 
   return (
     <View style={tw`flex-1`}>
-      {/* Incluir el Header */}
-      <Header toggleNavbar={toggleNavbar} />
+      
       
       {/* Incluir el Navbar */}
       <Navbar navigation={navigation} />

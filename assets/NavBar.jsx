@@ -3,6 +3,7 @@ import { View, Text, TouchableOpacity, Image, Animated } from 'react-native';
 import tw from 'twrnc';
 import NavbarIcon from "../icons/NavbarIcon.png"; // Icono para abrir el navbar
 import FlechaIcon from "../icons/FlechaIcon.png"; // Icono para cerrar el navbar
+import CampanaIcon from "../icons/CampanaIcon.png"; // Icono de la campana
 
 const Navbar = ({ navigation }) => {
   const [isVisible, setIsVisible] = useState(false); // Estado para controlar la visibilidad del navbar
@@ -38,6 +39,21 @@ const Navbar = ({ navigation }) => {
         <Image 
           source={isVisible ? FlechaIcon : NavbarIcon} 
           style={{ width: 24, height: 24 }}
+          resizeMode="contain"
+        />
+      </TouchableOpacity>
+      
+      {/* Icono de la campana en la esquina superior derecha */}
+      <TouchableOpacity 
+        onPress={() => handleNavigate('Notifications')}
+        style={[
+          tw`absolute top-4 right-4 p-2`, 
+          { zIndex: 3 } // Asegura que el icono esté encima del navbar y otros elementos
+        ]}
+      >
+        <Image 
+          source={CampanaIcon} 
+          style={{ width: 24, height: 24 }} 
           resizeMode="contain"
         />
       </TouchableOpacity>
