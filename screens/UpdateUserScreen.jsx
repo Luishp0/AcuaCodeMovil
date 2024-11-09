@@ -16,22 +16,46 @@ const UpdateUserScreen = ({ navigation }) => {
   const [hasChanges, setHasChanges] = useState(false);
   const [userId, setUserId] = useState(null); // Para guardar el ID del usuario
   const [profileImage, setProfileImage] = useState(null); // Estado para la imagen de perfil
+  const [imageUrl, setImageUrl] = useState(null); // URL de la imagen para guardar en la base de datos
 
   useEffect(() => {
     const loadUserData = async () => {
       const userData = await AsyncStorage.getItem('userData');
       if (userData) {
-        const { id, nombre, telefono, correo, fechaNacimiento } = JSON.parse(userData);
+        const parsedData = JSON.parse(userData);
+        const { id, nombre, telefono, correo, fechaNacimiento, fotos } = parsedData;
+  
         setUserId(id); // Guardar el ID del usuario
         setNombre(nombre);
         setTelefono(telefono);
         setCorreo(correo);
         setFecha(new Date(fechaNacimiento));
-        setInitialData({ nombre, telefono, correo, fechaNacimiento });
+  
+        // Verificar si la URL de la foto es relativa y transformarla en una URL absoluta
+        if (fotos?.url) {
+          const imageUrl = fotos.url.startsWith('http')
+            ? fotos.url
+            : `http://10.0.2.2:8000/${fotos.url.replace(/\\/g, '/')}`; // Reemplazar '\\' por '/'
+          
+          console.log('URL de la imagen transformada:', imageUrl); // Agrega este console.log para verificar la URL transformada
+        
+          setProfileImage(imageUrl);
+        } else {
+          setProfileImage(null);
+        }
+        
+  
+        setInitialData({ nombre, telefono, correo, fechaNacimiento, fotos });
+      } else {
+        console.error('No se encontró ningún dato de usuario en AsyncStorage');
+        Alert.alert('Error', 'No se pudieron cargar los datos del usuario');
       }
     };
     loadUserData();
   }, []);
+  
+  
+  
 
   useEffect(() => {
     const initialDateFormatted = initialData.fechaNacimiento
@@ -43,18 +67,22 @@ const UpdateUserScreen = ({ navigation }) => {
       nombre !== initialData.nombre ||
       telefono !== initialData.telefono ||
       correo !== initialData.correo ||
-      currentDateFormatted !== initialDateFormatted
+      currentDateFormatted !== initialDateFormatted ||
+      profileImage !== initialData.fotos?.url
     );
-  }, [nombre, telefono, correo, fecha, initialData]);
+  }, [nombre, telefono, correo, fecha, profileImage, initialData]);
 
   const handleUploadImage = async (formData) => {
     try {
       const response = await fetch('http://10.0.2.2:8000/imagen/subir', {
-        method: 'POST', // Usa POST o PUT según lo necesites
-        body: formData, // No incluyas el encabezado 'Content-Type'
+        method: 'POST',
+        body: formData,
       });
-  
+
       if (response.ok) {
+        const result = await response.json();
+        setImageUrl(result.filePath); // Guardar la URL de la imagen subida
+        setHasChanges(true); // Habilitar el botón de guardar cambios, pero esperar a que el usuario lo presione
         Alert.alert('Éxito', 'Imagen cargada correctamente');
       } else {
         const result = await response.json();
@@ -64,15 +92,13 @@ const UpdateUserScreen = ({ navigation }) => {
       Alert.alert('Error de conexión', error.message);
     }
   };
-  
-  
 
   const handleImagePick = () => {
     launchImageLibrary({ mediaType: 'photo' }, (response) => {
       if (response.assets && response.assets.length > 0) {
         const selectedImage = response.assets[0];
         setProfileImage(selectedImage.uri); // Actualizar el estado de la imagen
-  
+
         // Crear un objeto FormData para enviar al servidor
         const formData = new FormData();
         formData.append('image', {
@@ -80,7 +106,7 @@ const UpdateUserScreen = ({ navigation }) => {
           type: selectedImage.type, // Tipo de archivo (e.g., 'image/jpeg')
           name: selectedImage.fileName || `image.${selectedImage.type.split('/')[1]}`, // Nombre de archivo
         });
-  
+
         // Llamar a la función para subir la imagen
         handleUploadImage(formData);
       }
@@ -99,10 +125,11 @@ const UpdateUserScreen = ({ navigation }) => {
           telefono,
           correo,
           fechaNacimiento: fecha.toISOString().slice(0, 10), // Formato de fecha compatible
-          roles_idroles: 2 // Agregar el campo roles_idroles con valor fijo de 2
+          roles_idroles: 2, // Agregar el campo roles_idroles con valor fijo de 2
+          fotos: imageUrl ? { url: imageUrl } : undefined, // Agregar la URL de la imagen si está definida
         }),
       });
-
+  
       if (response.ok) {
         Alert.alert('Éxito', 'Información actualizada correctamente');
         const updatedData = {
@@ -111,26 +138,30 @@ const UpdateUserScreen = ({ navigation }) => {
           correo,
           fechaNacimiento: fecha.toISOString(),
           roles_idroles: 2,
+          fotos: imageUrl ? { url: imageUrl } : initialData.fotos, // Actualizar la imagen si se subió una nueva
         };
         await AsyncStorage.setItem('userData', JSON.stringify(updatedData));
         setInitialData(updatedData);
+        setProfileImage(updatedData.fotos?.url || null); // Asegúrate de actualizar el estado de la imagen
         setHasChanges(false);
-      } else {
+      }
+       else {
         const result = await response.json();
+        console.error('Error del servidor:', result);
         Alert.alert('Error', result.message || 'No se pudo actualizar la información');
       }
     } catch (error) {
+      console.error('Error de conexión:', error);
       Alert.alert('Error de conexión', error.message);
     }
   };
+  
 
   const handleDateChange = (event, selectedDate) => {
     const currentDate = selectedDate || fecha;
     setShowDatePicker(Platform.OS === 'ios');
     setFecha(currentDate);
   };
-
-  
 
   return (
     <View style={tw`flex-1`}>
