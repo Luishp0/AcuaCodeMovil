@@ -23,27 +23,23 @@ const UpdateUserScreen = ({ navigation }) => {
       const userData = await AsyncStorage.getItem('userData');
       if (userData) {
         const parsedData = JSON.parse(userData);
+        console.log('Datos del usuario cargados desde AsyncStorage:', parsedData); // Verificar datos
+  
         const { id, nombre, telefono, correo, fechaNacimiento, fotos } = parsedData;
   
-        setUserId(id); // Guardar el ID del usuario
+        setUserId(id);
         setNombre(nombre);
         setTelefono(telefono);
         setCorreo(correo);
         setFecha(new Date(fechaNacimiento));
   
-        // Verificar si la URL de la foto es relativa y transformarla en una URL absoluta
+        // Asignar directamente la URL de la imagen si está presente
         if (fotos?.url) {
-          const imageUrl = fotos.url.startsWith('http')
-            ? fotos.url
-            : `http://10.0.2.2:8000/${fotos.url.replace(/\\/g, '/')}`; // Reemplazar '\\' por '/'
-          
-          console.log('URL de la imagen transformada:', imageUrl); // Agrega este console.log para verificar la URL transformada
-        
-          setProfileImage(imageUrl);
+          console.log('URL de la imagen al cargar datos:', fotos.url); // Para verificar la URL
+          setProfileImage(fotos.url);
         } else {
           setProfileImage(null);
         }
-        
   
         setInitialData({ nombre, telefono, correo, fechaNacimiento, fotos });
       } else {
@@ -53,6 +49,9 @@ const UpdateUserScreen = ({ navigation }) => {
     };
     loadUserData();
   }, []);
+  
+  
+  
   
   
   
@@ -166,7 +165,7 @@ const UpdateUserScreen = ({ navigation }) => {
   return (
     <View style={tw`flex-1`}>
       <Navbar navigation={navigation} />
-
+  
       <TouchableOpacity onPress={handleImagePick} style={tw`items-center mb-4`}>
         {profileImage ? (
           <Image
@@ -179,14 +178,15 @@ const UpdateUserScreen = ({ navigation }) => {
           </View>
         )}
       </TouchableOpacity>
-
+  
+      {/* El resto del código de entrada y botones */}
       <TextInput
         style={tw`border border-blue-500 rounded-lg p-3 mb-4`}
         value={nombre}
         onChangeText={setNombre}
         placeholder="Nombre Completo"
       />
-
+  
       <TextInput
         style={tw`border border-blue-500 rounded-lg p-3 mb-4`}
         value={telefono}
@@ -194,7 +194,7 @@ const UpdateUserScreen = ({ navigation }) => {
         placeholder="Teléfono"
         keyboardType="phone-pad"
       />
-
+  
       <TextInput
         style={tw`border border-blue-500 rounded-lg p-3 mb-4`}
         value={correo}
@@ -202,13 +202,13 @@ const UpdateUserScreen = ({ navigation }) => {
         placeholder="Correo Electrónico"
         keyboardType="email-address"
       />
-
+  
       <TouchableOpacity onPress={() => setShowDatePicker(true)} style={tw`border border-blue-500 rounded-lg p-3 mb-4`}>
         <Text style={tw`text-gray-600`}>
           {fecha ? fecha.toLocaleDateString() : 'Fecha de Nacimiento'}
         </Text>
       </TouchableOpacity>
-
+  
       {showDatePicker && (
         <DateTimePicker
           value={fecha}
@@ -217,7 +217,7 @@ const UpdateUserScreen = ({ navigation }) => {
           onChange={handleDateChange}
         />
       )}
-
+  
       <TouchableOpacity
         style={[
           tw`rounded-lg py-3 items-center`,
@@ -232,6 +232,7 @@ const UpdateUserScreen = ({ navigation }) => {
       </TouchableOpacity>
     </View>
   );
+  
 };
 
 export default UpdateUserScreen;
