@@ -31,7 +31,8 @@ jobs:
         node-version: '16'  # Ajusta a la versión de Node.js que estás usando
 
     - name: Install dependencies
-      run: npm install
+      run: npm install --legacy-peer-deps
+
 
     - name: Install Java JDK
       uses: actions/setup-java@v3
