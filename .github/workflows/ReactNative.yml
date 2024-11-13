@@ -1,0 +1,60 @@
+name: React Native Android CI
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+      
+  pull_request:
+    branches:
+      - main
+      - develop
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    env:
+      # Define el SDK de Android y otras variables de entorno necesarias
+      ANDROID_SDK_ROOT: /usr/local/lib/android/sdk
+      JAVA_HOME: /usr/lib/jvm/java-11-openjdk-amd64
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '20'  # Ajusta a la versión de Node.js que estás usando
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Install Java JDK
+      uses: actions/setup-java@v3
+      with:
+        distribution: 'zulu'
+        java-version: '11'  # Versión recomendada para Android builds
+
+    - name: Set up Android SDK
+      uses: android-actions/setup-android@v2
+      with:
+        api-level: 30  # Nivel mínimo del SDK, ajusta según tus necesidades
+        target: android-30
+        ndk: '23.1.7779620'  # Requerido para React Native
+
+    - name: Cache node_modules
+      uses: actions/cache@v3
+      with:
+        path: node_modules
+        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-node-
+
+    - name: Build Android
+      run: |
+        cd android
+        ./gradlew assembleDebug
