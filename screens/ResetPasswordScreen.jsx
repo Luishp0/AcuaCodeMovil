@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, Alert } from 'react-native';
+import Config from 'react-native-config';
 import tw from 'twrnc';
+
+const apiUrl = Config.API_URL;
 
 const ResetPasswordScreen = ({navigation, route}) => {
   const { email } = route.params; // Obtiene el email de los parámetros de navegación
@@ -23,7 +26,7 @@ const ResetPasswordScreen = ({navigation, route}) => {
     }
 
     try {
-      const response = await fetch('http://10.0.2.2:8000/usuario/resetcontrasena', {
+      const response = await fetch(`${apiUrl}usuario/resetcontrasena`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

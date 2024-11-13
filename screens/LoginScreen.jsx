@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import Config from 'react-native-config';
 import { View, Text, TextInput, Button, Alert, TouchableOpacity, Image } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import CheckBox from '@react-native-community/checkbox'; // Asegúrate de instalar este paquete
@@ -7,6 +8,7 @@ import tw from 'twrnc';
 // Importa las imágenes de los iconos
 import AppleIcon from '../icons/AppleIcon.png';
 import GoogleIcon from '../icons/GoogleIcon.png';
+const apiUrl = Config.API_URL;
 
 const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
@@ -15,7 +17,7 @@ const LoginScreen = ({ navigation }) => {
 
   const handleLogin = async () => {
     try {
-      const response = await fetch('http://10.0.2.2:8000/usuario/login', {
+      const response = await fetch(`${apiUrl}usuario/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

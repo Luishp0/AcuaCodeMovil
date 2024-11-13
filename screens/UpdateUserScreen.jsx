@@ -5,6 +5,10 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import tw from 'twrnc';
 import Navbar from '../assets/NavBar'; // Ajusta la ruta según tu estructura
 import { launchImageLibrary } from 'react-native-image-picker';
+import Config from 'react-native-config';
+
+const apiUrl = Config.API_URL;
+
 
 const UpdateUserScreen = ({ navigation }) => {
   const [nombre, setNombre] = useState('');
@@ -23,7 +27,6 @@ const UpdateUserScreen = ({ navigation }) => {
       const userData = await AsyncStorage.getItem('userData');
       if (userData) {
         const parsedData = JSON.parse(userData);
-        console.log('Datos del usuario cargados desde AsyncStorage:', parsedData); // Verificar datos
   
         const { id, nombre, telefono, correo, fechaNacimiento, fotos } = parsedData;
   
@@ -35,7 +38,7 @@ const UpdateUserScreen = ({ navigation }) => {
   
         // Asignar directamente la URL de la imagen si está presente
         if (fotos?.url) {
-          console.log('URL de la imagen al cargar datos:', fotos.url); // Para verificar la URL
+          
           setProfileImage(fotos.url);
         } else {
           setProfileImage(null);
@@ -73,7 +76,7 @@ const UpdateUserScreen = ({ navigation }) => {
 
   const handleUploadImage = async (formData) => {
     try {
-      const response = await fetch('http://10.0.2.2:8000/imagen/subir', {
+      const response = await fetch(`${apiUrl}imagen/subir`, {
         method: 'POST',
         body: formData,
       });
@@ -114,7 +117,7 @@ const UpdateUserScreen = ({ navigation }) => {
 
   const handleSave = async () => {
     try {
-      const response = await fetch(`http://10.0.2.2:8000/usuario/${userId}`, {
+      const response = await fetch(`${apiUrl}usuario/${userId}`, {
         method: 'PUT', // Cambia a PATCH si el backend usa PATCH
         headers: {
           'Content-Type': 'application/json',

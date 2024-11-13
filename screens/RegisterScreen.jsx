@@ -1,7 +1,11 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, Button, Alert, TouchableOpacity, Platform } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import Config from 'react-native-config';
+
 import tw from 'twrnc';
+
+const apiUrl = Config.API_URL;
 
 const RegisterScreen = ({ navigation }) => {
   const [nombre, setNombre] = useState('');
@@ -21,7 +25,7 @@ const RegisterScreen = ({ navigation }) => {
 
   const handleRegister = async () => {
     try {
-      const response = await fetch('http://10.0.2.2:8000/usuario', {
+      const response = await fetch(`${apiUrl}usuario`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

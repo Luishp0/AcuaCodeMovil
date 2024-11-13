@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, Button, Alert, TouchableOpacity } from 'react-native';
 import tw from 'twrnc';
+import Config from 'react-native-config';
+
+const apiUrl = Config.API_URL;
+
 
 const VerificationScreen = ({ navigation, route }) => {
   const { email } = route.params;
@@ -17,7 +21,7 @@ const VerificationScreen = ({ navigation, route }) => {
     const enteredCode = code.join('');
 
     try {
-      const response = await fetch('http://10.0.2.2:8000/usuario/verificarcodigo', {
+      const response = await fetch(`${apiUrl}usuario/verificarcodigo`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -58,7 +62,7 @@ const VerificationScreen = ({ navigation, route }) => {
   // Función para reenviar el código
   const handleResendCode = async () => {
     try {
-      const response = await fetch('http://10.0.2.2:8000/usuario/reenviarcodigo', {
+      const response = await fetch(`${apiUrl}usuario/reenviarcodigo`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
