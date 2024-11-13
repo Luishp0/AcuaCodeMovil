@@ -1,0 +1,68 @@
+name: React Native CI
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+      - 'feature/**'
+  pull_request:
+    branches:
+      - main
+      - develop
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    env:
+      NODE_ENV: development
+
+    strategy:
+      matrix:
+        node-version: [16.x]
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+
+    - name: Cache Node modules
+      uses: actions/cache@v3
+      with:
+        path: |
+          ~/.npm
+          node_modules
+        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-node-
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Install Pods (iOS)
+      if: runner.os == 'macOS'
+      run: |
+        cd ios
+        pod install
+      env:
+        COCOAPODS_DISABLE_STATS: true
+
+    - name: Run Lint
+      run: npm run lint
+
+    - name: Run Tests
+      run: npm test
+
+    - name: Build Android
+      run: |
+        cd android
+        ./gradlew assembleDebug
+      env:
+        ANDROID_SDK_ROOT: /usr/local/lib/android/sdk
+  
