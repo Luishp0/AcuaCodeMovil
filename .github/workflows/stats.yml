@@ -1,8 +1,9 @@
 name: Stats
 
-on: 
-  push: 
-    branches: [ main ]
+on:  
+    schedule:
+      - cron: '0 0 * * *'
+        
 
 jobs: 
   build: 
