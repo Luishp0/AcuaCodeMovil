@@ -21,6 +21,8 @@ jobs:
           python-version: '3.11'
 
       - name: Run Script
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: python stats.py
 
       - name: Commit and Push Changes
