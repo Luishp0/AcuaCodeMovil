@@ -28,10 +28,10 @@ jobs:
     - name: Set up Node.js
       uses: actions/setup-node@v3
       with:
-        node-version: '16'  # Ajusta a la versión de Node.js que estás usando
+        node-version: '14'  # Ajusta a la versión de Node.js que estás usando
 
     - name: Install dependencies
-      run: npm install --legacy-peer-deps
+      run: npm install --production
 
 
     - name: Install Java JDK
