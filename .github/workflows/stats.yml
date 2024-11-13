@@ -1,0 +1,26 @@
+name: Stats
+
+on: 
+  push: 
+    branches: [ main ]
+
+jobs: 
+  build: 
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+
+      - name: setup phyton
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Run Scrip
+        run: phyton ./workflows/stats.py
+
+      - name: comit and push changes
+        uses: stefanzweifel/git-auto-comit-action@v5
