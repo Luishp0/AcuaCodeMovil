@@ -27,7 +27,7 @@ const LoginScreen = ({ navigation }) => {
           contrasena: password,
         }),
       });
-
+        
       const result = await response.json();
       if (response.ok) {
         Alert.alert('Inicio de sesión exitoso');
@@ -49,7 +49,9 @@ const LoginScreen = ({ navigation }) => {
         Alert.alert('Error en el inicio de sesión', result.message || 'Usuario o contraseña incorrectos');
       }
     } catch (error) {
-      Alert.alert('Error de conexión:', error.message);
+      console.log("API URL:", apiUrl);
+
+      Alert.alert('Error de conexión: x', error.message);
     }
   };
 
