@@ -1,7 +1,7 @@
 import React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, DefaultTheme, DarkTheme } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { SettingsProvider } from './assets/SettingsContext';
+import { SettingsProvider, SettingsContext } from './assets/SettingsContext';
 import LoginScreen from './screens/LoginScreen';
 import RegisterScreen from './screens/RegisterScreen';
 import HomeScreen from './screens/HomeScreen';
@@ -15,34 +15,31 @@ import ResetPasswordScreen from './screens/ResetPasswordScreen';
 
 const Stack = createStackNavigator();
 
+const AppNavigator = () => {
+  const { theme } = React.useContext(SettingsContext); // `useContext` dentro del proveedor
+
+  return (
+    <NavigationContainer theme={theme === 'dark' ? DarkTheme : DefaultTheme}>
+      <Stack.Navigator initialRouteName="Login">
+        <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="Register" component={RegisterScreen} options={{ headerShown: false }}/>
+        <Stack.Screen name="Home" component={HomeScreen} options={{ headerShown: false }}/>
+        <Stack.Screen name="UpdateUser" component={UpdateUserScreen} options={{ headerShown: false }}/>
+        <Stack.Screen name="Calendar" component={CalendarScreen} options={{ headerShown: false }}/>
+        <Stack.Screen name="Substances" component={SubstancesScreen} options={{ headerShown: false }}/>
+        <Stack.Screen name="Recovery" component={RecoveryScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="Verification" component={VerificationScreen} options={{ headerShown: false }}/>
+        <Stack.Screen name="Reset" component={ResetPasswordScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="Settings" component={SettingsScreen} options={{ headerShown: false }}/>
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+};
+
 const App = () => {
   return (
     <SettingsProvider>
-      <NavigationContainer>
-        <Stack.Navigator initialRouteName="Login">
-          <Stack.Screen name="Login" component={LoginScreen} />
-          <Stack.Screen name="Register" component={RegisterScreen} />
-          <Stack.Screen name="Home" component={HomeScreen} />
-          <Stack.Screen name="UpdateUser" component={UpdateUserScreen} />
-          <Stack.Screen name="Calendar" component={CalendarScreen} />
-          <Stack.Screen name="Substances" component={SubstancesScreen} />
-
-          <Stack.Screen name='Recovery' component={RecoveryScreen}/>
-
-          <Stack.Screen name='Verification' component={VerificationScreen}/>
-          <Stack.Screen name='Reset' component={ResetPasswordScreen}/>
-
-          <Stack.Screen 
-            name="Settings" 
-            component={SettingsScreen} 
-            options={{
-              title: 'Configuración', // Título del navbar
-              headerStyle: { backgroundColor: '#1F2937' }, // Color de fondo
-              headerTintColor: '#fff', // Color del texto
-            }}
-          />
-        </Stack.Navigator>
-      </NavigationContainer>
+      <AppNavigator />
     </SettingsProvider>
   );
 };

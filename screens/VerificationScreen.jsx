@@ -1,20 +1,30 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, Button, Alert, TouchableOpacity } from 'react-native';
+import React, { useState, useEffect, useRef, useContext } from 'react';
+import { View, Text, TextInput, Button, Alert, TouchableOpacity, StyleSheet } from 'react-native';
 import tw from 'twrnc';
 import Config from 'react-native-config';
+import { SettingsContext } from '../assets/SettingsContext';
 
 const apiUrl = Config.API_URL;
 
-
 const VerificationScreen = ({ navigation, route }) => {
   const { email } = route.params;
+  const { theme } = useContext(SettingsContext); // Obtener el tema actual
   const [code, setCode] = useState(['', '', '', '']);
   const [timer, setTimer] = useState(150);
+  const inputRefs = useRef([]); // Crear referencias para los inputs
 
   const handleCodeChange = (index, value) => {
+    if (value.length > 1) return;
+
     const newCode = [...code];
     newCode[index] = value;
     setCode(newCode);
+
+    if (value && index < code.length - 1) {
+      inputRefs.current[index + 1].focus();
+    } else if (!value && index > 0) {
+      inputRefs.current[index - 1].focus();
+    }
   };
 
   const handleVerify = async () => {
@@ -45,7 +55,6 @@ const VerificationScreen = ({ navigation, route }) => {
     }
   };
 
-  // Actualizar el temporizador
   useEffect(() => {
     const interval = setInterval(() => {
       setTimer((prev) => (prev > 0 ? prev - 1 : 0));
@@ -59,7 +68,6 @@ const VerificationScreen = ({ navigation, route }) => {
     return `${minutes}:${secs < 10 ? '0' : ''}${secs}`;
   };
 
-  // Función para reenviar el código
   const handleResendCode = async () => {
     try {
       const response = await fetch(`${apiUrl}usuario/reenviarcodigo`, {
@@ -74,7 +82,7 @@ const VerificationScreen = ({ navigation, route }) => {
 
       if (response.ok) {
         Alert.alert('Código reenviado', 'Hemos enviado un nuevo código de verificación.');
-        setTimer(150); // Restablece el temporizador a 2:30
+        setTimer(150);
       } else {
         Alert.alert('Error al reenviar', result.error || 'No se pudo reenviar el código.');
       }
@@ -84,36 +92,87 @@ const VerificationScreen = ({ navigation, route }) => {
   };
 
   return (
-    <View style={tw`flex-1 justify-center px-4`}>
-      <Text style={tw`text-2xl font-bold text-center mb-5`}>Verificación</Text>
-      <Text style={tw`text-center mb-5`}>
+    <View
+      style={[
+        tw`flex-1 justify-center px-6`,
+        theme === 'dark' ? tw`bg-gray-800` : tw`bg-white`,
+      ]}
+    >
+      <Text
+        style={[
+          tw`text-3xl font-bold text-center mb-6`,
+          theme === 'dark' ? tw`text-white` : tw`text-black`,
+        ]}
+      >
+        Verificación
+      </Text>
+      <Text
+        style={[
+          tw`text-lg text-center mb-8`,
+          theme === 'dark' ? tw`text-gray-300` : tw`text-gray-700`,
+        ]}
+      >
         Le hemos enviado un código para verificar su dirección de correo electrónico.
       </Text>
 
-      <View style={tw`flex-row justify-center mb-5`}>
+      <View style={tw`flex-row justify-center mb-8`}>
         {code.map((digit, index) => (
           <TextInput
             key={index}
-            style={tw`border w-10 h-12 text-center mx-1`}
+            ref={(el) => (inputRefs.current[index] = el)}
+            style={[
+              tw`mx-2 text-lg text-center rounded-lg`,
+              theme === 'dark'
+                ? tw`bg-gray-700 text-white border-gray-500`
+                : tw`bg-gray-100 text-black border-gray-300`,
+              styles.inputBox,
+            ]}
             keyboardType="number-pad"
             maxLength={1}
             value={digit}
             onChangeText={(value) => handleCodeChange(index, value)}
+            onKeyPress={({ nativeEvent }) => {
+              if (nativeEvent.key === 'Backspace' && !digit && index > 0) {
+                inputRefs.current[index - 1].focus();
+              }
+            }}
           />
         ))}
       </View>
 
-      <Text style={tw`text-center mb-5`}>
+      <Text
+        style={[
+          tw`text-center mb-8 text-lg`,
+          theme === 'dark' ? tw`text-gray-300` : tw`text-gray-700`,
+        ]}
+      >
         El código caduca en: <Text style={tw`text-blue-500`}>{formatTime(timer)}</Text>
       </Text>
 
-      <Button title="Verificar" onPress={handleVerify} color="#1DA1F2" />
+      <TouchableOpacity
+        onPress={handleVerify}
+        style={[tw`py-3 rounded-lg mb-4`, theme === 'dark' ? tw`bg-blue-600` : tw`bg-blue-500`, styles.button]}
+      >
+        <Text style={tw`text-white text-center text-lg font-bold`}>Verificar</Text>
+      </TouchableOpacity>
 
       <TouchableOpacity onPress={handleResendCode}>
-        <Text style={tw`text-blue-500 text-center mt-4`}>Enviar de Nuevo</Text>
+        <Text style={tw`text-blue-500 text-center text-lg`}>Enviar de Nuevo</Text>
       </TouchableOpacity>
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  inputBox: {
+    width: 60,
+    height: 60,
+    fontSize: 24,
+    borderWidth: 2,
+  },
+  button: {
+    width: '100%',
+  },
+});
 
 export default VerificationScreen;

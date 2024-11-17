@@ -1,13 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { View, Text, TextInput, Button, Alert, TouchableOpacity, Platform } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import Config from 'react-native-config';
-
 import tw from 'twrnc';
+import { SettingsContext } from '../assets/SettingsContext';
 
 const apiUrl = Config.API_URL;
 
 const RegisterScreen = ({ navigation }) => {
+  const { theme } = useContext(SettingsContext); // Obtén el tema actual
   const [nombre, setNombre] = useState('');
   const [fechaNacimiento, setFechaNacimiento] = useState('');
   const [correo, setCorreo] = useState('');
@@ -52,19 +53,39 @@ const RegisterScreen = ({ navigation }) => {
   };
 
   return (
-    <View style={tw`flex-1 justify-center px-4`}>
-      <Text style={tw`text-2xl font-bold text-center mb-5`}>Registrar</Text>
-      <TextInput 
-        placeholder="Nombre Completo" 
-        style={tw`border p-2 mb-4`} 
-        keyboardType='default'
+    <View
+      style={[
+        tw`flex-1 justify-center px-4`,
+        theme === 'dark' ? tw`bg-gray-800` : tw`bg-white`,
+      ]}
+    >
+      <Text
+        style={[
+          tw`text-2xl font-bold text-center mb-5`,
+          theme === 'dark' ? tw`text-white` : tw`text-black`,
+        ]}
+      >
+        Registrar
+      </Text>
+      <TextInput
+        placeholder="Nombre Completo"
+        placeholderTextColor={theme === 'dark' ? '#aaa' : '#555'}
+        style={[
+          tw`border p-2 mb-4 rounded`,
+          theme === 'dark' ? tw`bg-gray-700 text-white` : tw`bg-gray-100 text-black`,
+        ]}
+        keyboardType="default"
         value={nombre}
         onChangeText={setNombre}
       />
       <TouchableOpacity onPress={() => setShowDatePicker(true)}>
         <TextInput
           placeholder="Fecha de Nacimiento"
-          style={tw`border p-2 mb-4`}
+          placeholderTextColor={theme === 'dark' ? '#aaa' : '#555'}
+          style={[
+            tw`border p-2 mb-4 rounded`,
+            theme === 'dark' ? tw`bg-gray-700 text-white` : tw`bg-gray-100 text-black`,
+          ]}
           value={fechaNacimiento}
           editable={false} // Esto evita que el usuario escriba manualmente
         />
@@ -77,31 +98,51 @@ const RegisterScreen = ({ navigation }) => {
           onChange={handleDateChange}
         />
       )}
-      <TextInput 
-        placeholder="Correo" 
-        style={tw`border p-2 mb-4`} 
-        keyboardType='email-address'
+      <TextInput
+        placeholder="Correo"
+        placeholderTextColor={theme === 'dark' ? '#aaa' : '#555'}
+        style={[
+          tw`border p-2 mb-4 rounded`,
+          theme === 'dark' ? tw`bg-gray-700 text-white` : tw`bg-gray-100 text-black`,
+        ]}
+        keyboardType="email-address"
         value={correo}
         onChangeText={setCorreo}
       />
-      <TextInput 
-        placeholder="Telefono" 
-        style={tw`border p-2 mb-4`} 
-        keyboardType='phone-pad'
+      <TextInput
+        placeholder="Teléfono"
+        placeholderTextColor={theme === 'dark' ? '#aaa' : '#555'}
+        style={[
+          tw`border p-2 mb-4 rounded`,
+          theme === 'dark' ? tw`bg-gray-700 text-white` : tw`bg-gray-100 text-black`,
+        ]}
+        keyboardType="phone-pad"
         value={telefono}
         onChangeText={setTelefono}
       />
-      <TextInput 
-        placeholder="Contraseña" 
-        style={tw`border p-2 mb-4`} 
+      <TextInput
+        placeholder="Contraseña"
+        placeholderTextColor={theme === 'dark' ? '#aaa' : '#555'}
+        style={[
+          tw`border p-2 mb-4 rounded`,
+          theme === 'dark' ? tw`bg-gray-700 text-white` : tw`bg-gray-100 text-black`,
+        ]}
         secureTextEntry
         value={contrasena}
         onChangeText={setContrasena}
       />
       <View style={tw`mb-4`}>
-        <Button title="Register" onPress={handleRegister} />
+        <Button
+          title="Registrar"
+          onPress={handleRegister}
+          color={theme === 'dark' ? '#1DA1F2' : '#007AFF'}
+        />
       </View>
-      <Button title="Go to Login" onPress={() => navigation.navigate('Login')} />
+      <Button
+        title="Ir al Login"
+        onPress={() => navigation.navigate('Login')}
+        color={theme === 'dark' ? '#888' : 'gray'}
+      />
     </View>
   );
 };
