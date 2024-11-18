@@ -7,7 +7,7 @@ import Config from 'react-native-config';
 import Icon from 'react-native-vector-icons/Ionicons';
 import tw from 'twrnc';
 
-import Logo from '../icons/FlechaIcon.png'; // Ruta del logo
+import Logo from '../icons/logotra.png'; // Ruta del logo
 import AppleIcon from '../icons/AppleIcon.png'; // Ícono personalizado
 import GoogleIcon from '../icons/GoogleIcon.png'; // Ícono personalizado
 
@@ -134,20 +134,22 @@ const LoginScreen = ({ navigation }) => {
           Recordar
         </Text>
         <TouchableOpacity onPress={() => navigation.navigate('Recovery')} style={tw`ml-auto`}>
-          <Text style={tw`text-blue-500 text-lg font-semibold`}>¿Olvidaste la contraseña?</Text>
+          <Text style={[tw`text-blue-500 text-lg font-semibold`, {color:'#3D9FB3'}]}>¿Olvidaste la contraseña?</Text>
         </TouchableOpacity>
       </View>
-
       {/* Botón de ingresar */}
       <TouchableOpacity
         style={[
           tw`py-4 rounded-lg mb-6`,
-          theme === 'dark' ? tw`bg-blue-500` : tw`bg-blue-600`,
+          {
+            backgroundColor: theme === 'dark' ? '#3A8FA3' : '#0CC0DF', // Diferentes colores para los temas
+          },
         ]}
         onPress={handleLogin}
       >
         <Text style={tw`text-white text-center text-lg font-bold`}>Ingresar</Text>
       </TouchableOpacity>
+
 
       {/* Registrarse */}
       <Text
@@ -157,7 +159,7 @@ const LoginScreen = ({ navigation }) => {
         ]}
       >
         ¿Aún no tienes cuenta?{' '}
-        <Text onPress={() => navigation.navigate('Register')} style={tw`text-blue-500 font-semibold text-lg`}>
+        <Text onPress={() => navigation.navigate('Register')} style={[tw`text-blue-500 font-semibold text-lg`,{color:'#3D9FB3'}]}>
           Registrarse
         </Text>
       </Text>
@@ -175,11 +177,11 @@ const LoginScreen = ({ navigation }) => {
       {/* Política de privacidad */}
       <View style={tw`flex-row justify-center`}>
         <TouchableOpacity>
-          <Text style={tw`text-lg text-blue-500`}>Política de privacidad</Text>
+          <Text style={[tw`text-lg`,{color:'#3D9FB3'}]}>Política de privacidad</Text>
         </TouchableOpacity>
         <Text style={tw`mx-2 text-lg text-gray-500`}>|</Text>
         <TouchableOpacity>
-          <Text style={tw`text-lg text-blue-500`}>Términos de uso</Text>
+          <Text style={[tw`text-lg `,{color:'#3D9FB3'}]}>Términos de uso</Text>
         </TouchableOpacity>
       </View>
     </View>
