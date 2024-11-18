@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { View, Text, TextInput, Button, Alert, TouchableOpacity, Platform } from 'react-native';
+import { View, Text, TextInput, Alert, TouchableOpacity, Platform } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import Config from 'react-native-config';
 import tw from 'twrnc';
@@ -61,7 +61,7 @@ const RegisterScreen = ({ navigation }) => {
     >
       <Text
         style={[
-          tw`text-2xl font-bold text-center mb-5`,
+          tw`text-3xl font-bold text-center mb-6`,
           theme === 'dark' ? tw`text-white` : tw`text-black`,
         ]}
       >
@@ -71,7 +71,7 @@ const RegisterScreen = ({ navigation }) => {
         placeholder="Nombre Completo"
         placeholderTextColor={theme === 'dark' ? '#aaa' : '#555'}
         style={[
-          tw`border p-2 mb-4 rounded`,
+          tw`border p-3 mb-4 rounded-lg text-lg`,
           theme === 'dark' ? tw`bg-gray-700 text-white` : tw`bg-gray-100 text-black`,
         ]}
         keyboardType="default"
@@ -83,7 +83,7 @@ const RegisterScreen = ({ navigation }) => {
           placeholder="Fecha de Nacimiento"
           placeholderTextColor={theme === 'dark' ? '#aaa' : '#555'}
           style={[
-            tw`border p-2 mb-4 rounded`,
+            tw`border p-3 mb-4 rounded-lg text-lg`,
             theme === 'dark' ? tw`bg-gray-700 text-white` : tw`bg-gray-100 text-black`,
           ]}
           value={fechaNacimiento}
@@ -102,7 +102,7 @@ const RegisterScreen = ({ navigation }) => {
         placeholder="Correo"
         placeholderTextColor={theme === 'dark' ? '#aaa' : '#555'}
         style={[
-          tw`border p-2 mb-4 rounded`,
+          tw`border p-3 mb-4 rounded-lg text-lg`,
           theme === 'dark' ? tw`bg-gray-700 text-white` : tw`bg-gray-100 text-black`,
         ]}
         keyboardType="email-address"
@@ -113,7 +113,7 @@ const RegisterScreen = ({ navigation }) => {
         placeholder="Teléfono"
         placeholderTextColor={theme === 'dark' ? '#aaa' : '#555'}
         style={[
-          tw`border p-2 mb-4 rounded`,
+          tw`border p-3 mb-4 rounded-lg text-lg`,
           theme === 'dark' ? tw`bg-gray-700 text-white` : tw`bg-gray-100 text-black`,
         ]}
         keyboardType="phone-pad"
@@ -124,25 +124,38 @@ const RegisterScreen = ({ navigation }) => {
         placeholder="Contraseña"
         placeholderTextColor={theme === 'dark' ? '#aaa' : '#555'}
         style={[
-          tw`border p-2 mb-4 rounded`,
+          tw`border p-3 mb-4 rounded-lg text-lg`,
           theme === 'dark' ? tw`bg-gray-700 text-white` : tw`bg-gray-100 text-black`,
         ]}
         secureTextEntry
         value={contrasena}
         onChangeText={setContrasena}
       />
-      <View style={tw`mb-4`}>
-        <Button
-          title="Registrar"
-          onPress={handleRegister}
-          color={theme === 'dark' ? '#1DA1F2' : '#007AFF'}
-        />
-      </View>
-      <Button
-        title="Ir al Login"
+      <TouchableOpacity
+        onPress={handleRegister}
+        style={[
+          tw`p-4 mb-4 rounded-lg`,
+          theme === 'dark' ? tw`bg-blue-500` : tw`bg-blue-600`,
+        ]}
+      >
+        <Text style={tw`text-center text-white font-bold text-lg`}>Registrar</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
         onPress={() => navigation.navigate('Login')}
-        color={theme === 'dark' ? '#888' : 'gray'}
-      />
+        style={[
+          tw`p-4 rounded-lg`,
+          theme === 'dark' ? tw`bg-gray-600` : tw`bg-gray-300`,
+        ]}
+      >
+        <Text
+          style={[
+            tw`text-center font-bold text-lg`,
+            theme === 'dark' ? tw`text-white` : tw`text-black`,
+          ]}
+        >
+          Ir al Login
+        </Text>
+      </TouchableOpacity>
     </View>
   );
 };

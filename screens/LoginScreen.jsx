@@ -122,6 +122,7 @@ const LoginScreen = ({ navigation }) => {
         <CheckBox
           value={rememberMe}
           onValueChange={setRememberMe}
+          tintColors={{ true: theme === 'dark' ? '#1DA1F2' : '#007AFF', false: '#aaa' }}
           style={{ width: 24, height: 24 }}
         />
         <Text
@@ -151,12 +152,12 @@ const LoginScreen = ({ navigation }) => {
       {/* Registrarse */}
       <Text
         style={[
-          tw`text-center mb-6`,
+          tw`text-center mb-6 text-lg`,
           theme === 'dark' ? tw`text-white` : tw`text-black`,
         ]}
       >
         ¿Aún no tienes cuenta?{' '}
-        <Text onPress={() => navigation.navigate('Register')} style={tw`text-blue-500 font-semibold`}>
+        <Text onPress={() => navigation.navigate('Register')} style={tw`text-blue-500 font-semibold text-lg`}>
           Registrarse
         </Text>
       </Text>
@@ -174,11 +175,11 @@ const LoginScreen = ({ navigation }) => {
       {/* Política de privacidad */}
       <View style={tw`flex-row justify-center`}>
         <TouchableOpacity>
-          <Text style={tw`text-sm text-blue-500`}>Política de privacidad</Text>
+          <Text style={tw`text-lg text-blue-500`}>Política de privacidad</Text>
         </TouchableOpacity>
-        <Text style={tw`mx-2`}>|</Text>
+        <Text style={tw`mx-2 text-lg text-gray-500`}>|</Text>
         <TouchableOpacity>
-          <Text style={tw`text-sm text-blue-500`}>Términos de uso</Text>
+          <Text style={tw`text-lg text-blue-500`}>Términos de uso</Text>
         </TouchableOpacity>
       </View>
     </View>
