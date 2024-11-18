@@ -164,15 +164,31 @@ const LoginScreen = ({ navigation }) => {
         </Text>
       </Text>
 
-      {/* Botones de redes sociales */}
-      <View style={tw`flex-row justify-center mb-8`}>
-        <TouchableOpacity style={tw`p-4 bg-gray-100 rounded-lg mr-4`}>
-          <Image source={AppleIcon} style={{ width: 32, height: 32 }} />
-        </TouchableOpacity>
-        <TouchableOpacity style={tw`p-4 bg-gray-100 rounded-lg`}>
-          <Image source={GoogleIcon} style={{ width: 32, height: 32 }} />
-        </TouchableOpacity>
-      </View>
+{/* Botones de redes sociales */}
+<View style={tw`flex-row justify-center mb-8`}>
+  {theme === 'dark' ? (
+    // Íconos en modo oscuro
+    <>
+      <TouchableOpacity style={tw`mr-8`}>
+        <Icon name="logo-apple" size={40} color="#FFF" />
+      </TouchableOpacity>
+      <TouchableOpacity>
+        <Icon name="logo-google" size={40} color="#FFF" />
+      </TouchableOpacity>
+    </>
+  ) : (
+    // Imágenes en modo claro
+    <>
+      <TouchableOpacity style={tw`mr-8`}>
+        <Image source={AppleIcon} style={{ width: 40, height: 40 }} />
+      </TouchableOpacity>
+      <TouchableOpacity>
+        <Image source={GoogleIcon} style={{ width: 40, height: 40 }} />
+      </TouchableOpacity>
+    </>
+  )}
+</View>
+
 
       {/* Política de privacidad */}
       <View style={tw`flex-row justify-center`}>
