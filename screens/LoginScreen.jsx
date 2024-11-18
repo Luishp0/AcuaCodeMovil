@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { View, Text, TextInput, Alert, TouchableOpacity, Image } from 'react-native';
+import { View, Text, TextInput, Alert, TouchableOpacity, Image, StyleSheet } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import CheckBox from '@react-native-community/checkbox';
 import { SettingsContext } from '../assets/SettingsContext';
@@ -108,7 +108,11 @@ const LoginScreen = ({ navigation }) => {
           value={password}
           onChangeText={setPassword}
         />
-        <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
+        <TouchableOpacity
+          onPress={() => setShowPassword(!showPassword)}
+          style={styles.touchableIcon}
+          accessibilityLabel="Mostrar u ocultar contraseña"
+        >
           <Icon
             name={showPassword ? 'eye' : 'eye-off'}
             size={24}
@@ -119,12 +123,18 @@ const LoginScreen = ({ navigation }) => {
 
       {/* Recordar y Olvidar Contraseña */}
       <View style={tw`flex-row items-center mb-6`}>
-        <CheckBox
-          value={rememberMe}
-          onValueChange={setRememberMe}
-          tintColors={{ true: theme === 'dark' ? '#1DA1F2' : '#007AFF', false: '#aaa' }}
-          style={{ width: 24, height: 24 }}
-        />
+        <TouchableOpacity
+          style={styles.checkBoxWrapper}
+          onPress={() => setRememberMe(!rememberMe)}
+          accessibilityLabel="Recordar mi correo"
+        >
+          <CheckBox
+            value={rememberMe}
+            onValueChange={setRememberMe}
+            tintColors={{ true: theme === 'dark' ? '#1DA1F2' : '#007AFF', false: '#aaa' }}
+            style={styles.checkBox}
+          />
+        </TouchableOpacity>
         <Text
           style={[
             tw`ml-3 text-lg`,
@@ -133,23 +143,35 @@ const LoginScreen = ({ navigation }) => {
         >
           Recordar
         </Text>
-        <TouchableOpacity onPress={() => navigation.navigate('Recovery')} style={tw`ml-auto`}>
-          <Text style={[tw`text-blue-500 text-lg font-semibold`, {color:'#3D9FB3'}]}>¿Olvidaste la contraseña?</Text>
+        <TouchableOpacity
+          onPress={() => navigation.navigate('Recovery')}
+          style={styles.touchableText}
+          accessibilityLabel="¿Olvidaste la contraseña?"
+        >
+          <Text
+            style={[
+              tw`text-blue-500 text-lg font-semibold`,
+              { color: '#3D9FB3' },
+            ]}
+          >
+            ¿Olvidaste la contraseña?
+          </Text>
         </TouchableOpacity>
       </View>
+
       {/* Botón de ingresar */}
       <TouchableOpacity
         style={[
           tw`py-4 rounded-lg mb-6`,
           {
-            backgroundColor: theme === 'dark' ? '#3A8FA3' : '#0CC0DF', // Diferentes colores para los temas
+            backgroundColor: theme === 'dark' ? '#3A8FA3' : '#0CC0DF',
           },
         ]}
         onPress={handleLogin}
+        accessibilityLabel="Ingresar"
       >
         <Text style={tw`text-white text-center text-lg font-bold`}>Ingresar</Text>
       </TouchableOpacity>
-
 
       {/* Registrarse */}
       <Text
@@ -159,49 +181,94 @@ const LoginScreen = ({ navigation }) => {
         ]}
       >
         ¿Aún no tienes cuenta?{' '}
-        <Text onPress={() => navigation.navigate('Register')} style={[tw`text-blue-500 font-semibold text-lg`,{color:'#3D9FB3'}]}>
+        <Text
+          onPress={() => navigation.navigate('Register')}
+          style={[
+            tw`text-blue-500 font-semibold text-lg`,
+            { color: '#3D9FB3' },
+          ]}
+          accessibilityLabel="Registrarse"
+        >
           Registrarse
         </Text>
       </Text>
 
-{/* Botones de redes sociales */}
-<View style={tw`flex-row justify-center mb-8`}>
-  {theme === 'dark' ? (
-    // Íconos en modo oscuro
-    <>
-      <TouchableOpacity style={tw`mr-8`}>
-        <Icon name="logo-apple" size={40} color="#FFF" />
-      </TouchableOpacity>
-      <TouchableOpacity>
-        <Icon name="logo-google" size={40} color="#FFF" />
-      </TouchableOpacity>
-    </>
-  ) : (
-    // Imágenes en modo claro
-    <>
-      <TouchableOpacity style={tw`mr-8`}>
-        <Image source={AppleIcon} style={{ width: 40, height: 40 }} />
-      </TouchableOpacity>
-      <TouchableOpacity>
-        <Image source={GoogleIcon} style={{ width: 40, height: 40 }} />
-      </TouchableOpacity>
-    </>
-  )}
-</View>
-
+      {/* Botones de redes sociales */}
+      <View style={tw`flex-row justify-center mb-8`}>
+        <TouchableOpacity
+          style={styles.socialButton}
+          accessibilityLabel="Iniciar sesión con Apple"
+        >
+          {theme === 'dark' ? (
+            <Icon name="logo-apple" size={40} color="#FFF" />
+          ) : (
+            <Image source={AppleIcon} style={styles.socialIcon} />
+          )}
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.socialButton}
+          accessibilityLabel="Iniciar sesión con Google"
+        >
+          {theme === 'dark' ? (
+            <Icon name="logo-google" size={40} color="#FFF" />
+          ) : (
+            <Image source={GoogleIcon} style={styles.socialIcon} />
+          )}
+        </TouchableOpacity>
+      </View>
 
       {/* Política de privacidad */}
       <View style={tw`flex-row justify-center`}>
-        <TouchableOpacity>
-          <Text style={[tw`text-lg`,{color:'#3D9FB3'}]}>Política de privacidad</Text>
+        <TouchableOpacity
+          style={styles.touchableText}
+          accessibilityLabel="Política de privacidad"
+        >
+          <Text style={[tw`text-lg`, { color: '#3D9FB3' }]}>Política de privacidad</Text>
         </TouchableOpacity>
         <Text style={tw`mx-2 text-lg text-gray-500`}>|</Text>
-        <TouchableOpacity>
-          <Text style={[tw`text-lg `,{color:'#3D9FB3'}]}>Términos de uso</Text>
+        <TouchableOpacity
+          style={styles.touchableText}
+          accessibilityLabel="Términos de uso"
+        >
+          <Text style={[tw`text-lg`, { color: '#3D9FB3' }]}>Términos de uso</Text>
         </TouchableOpacity>
       </View>
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  touchableIcon: {
+    width: 48,
+    height: 48,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  socialButton: {
+    width: 48,
+    height: 48,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginHorizontal: 8,
+  },
+  socialIcon: {
+    width: 40,
+    height: 40,
+  },
+  touchableText: {
+    paddingHorizontal: 8,
+    paddingVertical: 12,
+  },
+  checkBoxWrapper: {
+    width: 48,
+    height: 48,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  checkBox: {
+    width: 24,
+    height: 24,
+  },
+});
 
 export default LoginScreen;
