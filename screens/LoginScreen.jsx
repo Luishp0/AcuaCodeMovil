@@ -96,7 +96,7 @@ const LoginScreen = ({ navigation }) => {
 
       {/* Input de correo electrónico */}
       <View style={[styles.inputContainer, theme === 'dark' ? styles.darkInput : styles.lightInput]}>
-        <Icon name="mail" size={20} color={theme === 'dark' ? '#FFF' : '#000'} style={styles.icon} />
+        <Icon name="mail" size={24} color={theme === 'dark' ? '#FFF' : '#000'} style={styles.icon} />
         <TextInput
           placeholder="Correo Electrónico"
           placeholderTextColor={theme === 'dark' ? '#CCC' : '#555'}
@@ -109,7 +109,7 @@ const LoginScreen = ({ navigation }) => {
 
       {/* Input de contraseña */}
       <View style={[styles.inputContainer, theme === 'dark' ? styles.darkInput : styles.lightInput]}>
-        <Icon name="lock-closed" size={20} color={theme === 'dark' ? '#FFF' : '#000'} style={styles.icon} />
+        <Icon name="lock-closed" size={24} color={theme === 'dark' ? '#FFF' : '#000'} style={styles.icon} />
         <TextInput
           placeholder="Contraseña"
           placeholderTextColor={theme === 'dark' ? '#AAA' : '#555'}
@@ -119,12 +119,12 @@ const LoginScreen = ({ navigation }) => {
           onChangeText={setPassword}
         />
         <TouchableOpacity onPress={() => setShowPassword(!showPassword)} style={styles.touchableIcon}>
-          <Icon name={showPassword ? 'eye' : 'eye-off'} size={20} color={theme === 'dark' ? '#FFF' : '#000'} />
+          <Icon name={showPassword ? 'eye' : 'eye-off'} size={24} color={theme === 'dark' ? '#FFF' : '#000'} />
         </TouchableOpacity>
       </View>
 
+      {/* Checkbox y Recordar */}
       <View style={tw`flex-row justify-between items-center mb-6`}>
-        {/* Checkbox y Recordar */}
         <View style={tw`flex-row items-center`}>
           <CheckBox
             value={rememberMe}
@@ -221,6 +221,7 @@ const styles = StyleSheet.create({
   },
   darkInput: {
     borderColor: '#4B5563',
+    backgroundColor: '#374151',
   },
   lightInput: {
     borderColor: '#D1D5DB',
