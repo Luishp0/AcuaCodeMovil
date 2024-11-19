@@ -75,17 +75,12 @@ const LoginScreen = ({ navigation }) => {
       </Text>
 
       {/* Input de correo electrónico */}
-      <View
-        style={[
-          tw`border rounded-lg px-4 py-3 mb-4 flex-row items-center`,
-          theme === 'dark' ? tw`bg-gray-700 border-gray-600` : tw`bg-gray-100 border-gray-300`,
-        ]}
-      >
-        <Icon name="mail" size={24} color={theme === 'dark' ? '#aaa' : '#555'} />
+      <View style={[styles.inputContainer, theme === 'dark' ? styles.darkInput : styles.lightInput]}>
+        <Icon name="mail" size={20} color={theme === 'dark' ? '#FFF' : '#000'} style={styles.icon} />
         <TextInput
           placeholder="Correo Electrónico"
-          placeholderTextColor={theme === 'dark' ? '#aaa' : '#555'}
-          style={[tw`ml-4 flex-1 text-lg`, theme === 'dark' ? tw`text-white` : tw`text-black`]}
+          placeholderTextColor={theme === 'dark' ? '#CCC' : '#555'}
+          style={[styles.input, theme === 'dark' ? { color: '#FFF' } : { color: '#000' }]}
           keyboardType="email-address"
           value={email}
           onChangeText={setEmail}
@@ -93,84 +88,53 @@ const LoginScreen = ({ navigation }) => {
       </View>
 
       {/* Input de contraseña */}
-      <View
-        style={[
-          tw`border rounded-lg px-4 py-3 mb-4 flex-row items-center`,
-          theme === 'dark' ? tw`bg-gray-700 border-gray-600` : tw`bg-gray-100 border-gray-300`,
-        ]}
-      >
-        <Icon name="lock-closed" size={24} color={theme === 'dark' ? '#aaa' : '#555'} />
+      <View style={[styles.inputContainer, theme === 'dark' ? styles.darkInput : styles.lightInput]}>
+        <Icon name="lock-closed" size={20} color={theme === 'dark' ? '#FFF' : '#000'} style={styles.icon} />
         <TextInput
           placeholder="Contraseña"
-          placeholderTextColor={theme === 'dark' ? '#aaa' : '#555'}
-          style={[tw`ml-4 flex-1 text-lg`, theme === 'dark' ? tw`text-white` : tw`text-black`]}
+          placeholderTextColor={theme === 'dark' ? '#AAA' : '#555'}
+          style={[styles.input, theme === 'dark' ? { color: '#FFF' } : { color: '#000' }]}
           secureTextEntry={!showPassword}
           value={password}
           onChangeText={setPassword}
         />
-        <TouchableOpacity
-          onPress={() => setShowPassword(!showPassword)}
-          style={styles.touchableIcon}
-          accessibilityLabel="Mostrar u ocultar contraseña"
-        >
-          <Icon
-            name={showPassword ? 'eye' : 'eye-off'}
-            size={24}
-            color={theme === 'dark' ? '#aaa' : '#555'}
-          />
+        <TouchableOpacity onPress={() => setShowPassword(!showPassword)} style={styles.touchableIcon}>
+          <Icon name={showPassword ? 'eye' : 'eye-off'} size={20} color={theme === 'dark' ? '#FFF' : '#000'} />
         </TouchableOpacity>
       </View>
 
-      {/* Recordar y Olvidar Contraseña */}
-      <View style={tw`flex-row items-center mb-6`}>
-        <TouchableOpacity
-          style={styles.checkBoxWrapper}
-          onPress={() => setRememberMe(!rememberMe)}
-          accessibilityLabel="Recordar mi correo"
-        >
+      <View style={tw`flex-row justify-between items-center mb-6`}>
+        {/* Checkbox y Recordar */}
+        <View style={tw`flex-row items-center`}>
           <CheckBox
             value={rememberMe}
             onValueChange={setRememberMe}
             tintColors={{ true: theme === 'dark' ? '#1DA1F2' : '#007AFF', false: '#aaa' }}
             style={styles.checkBox}
           />
-        </TouchableOpacity>
-        <Text
-          style={[
-            tw`ml-3 text-lg`,
-            theme === 'dark' ? tw`text-white` : tw`text-black`,
-          ]}
-        >
-          Recordar
-        </Text>
-        <TouchableOpacity
-          onPress={() => navigation.navigate('Recovery')}
-          style={styles.touchableText}
-          accessibilityLabel="¿Olvidaste la contraseña?"
-        >
-          <Text
-            style={[
-              tw`text-blue-500 text-lg font-semibold`,
-              { color: '#3D9FB3' },
-            ]}
-          >
+          <Text style={[tw`ml-3 text-sm font-bold`, theme === 'dark' ? tw`text-white` : tw`text-black`]}>Recordar</Text>
+        </View>
+
+        {/* ¿Olvidaste la contraseña? */}
+        <TouchableOpacity onPress={() => navigation.navigate('Recovery')} style={styles.touchableText}>
+          <Text style={[tw`text-blue-500 text-sm font-semibold`, { fontSize: 14, color: '#3D9FB3' }]}>
             ¿Olvidaste la contraseña?
           </Text>
         </TouchableOpacity>
       </View>
 
+
       {/* Botón de ingresar */}
       <TouchableOpacity
         style={[
-          tw`py-4 rounded-lg mb-6`,
+          tw`py-4 rounded-lg mb-7`,
           {
             backgroundColor: theme === 'dark' ? '#3A8FA3' : '#0CC0DF',
           },
         ]}
         onPress={handleLogin}
-        accessibilityLabel="Ingresar"
       >
-        <Text style={tw`text-white text-center text-lg font-bold`}>Ingresar</Text>
+        <Text style={tw`text-white text-center text-xl font-bold`}>Ingresar</Text>
       </TouchableOpacity>
 
       {/* Registrarse */}
@@ -181,34 +145,21 @@ const LoginScreen = ({ navigation }) => {
         ]}
       >
         ¿Aún no tienes cuenta?{' '}
-        <Text
-          onPress={() => navigation.navigate('Register')}
-          style={[
-            tw`text-blue-500 font-semibold text-lg`,
-            { color: '#3D9FB3' },
-          ]}
-          accessibilityLabel="Registrarse"
-        >
+        <Text onPress={() => navigation.navigate('Register')} style={[tw`text-blue-500 font-semibold`, { color: '#3D9FB3' }]}>
           Registrarse
         </Text>
       </Text>
 
       {/* Botones de redes sociales */}
       <View style={tw`flex-row justify-center mb-8`}>
-        <TouchableOpacity
-          style={styles.socialButton}
-          accessibilityLabel="Iniciar sesión con Apple"
-        >
+        <TouchableOpacity style={styles.socialButton}>
           {theme === 'dark' ? (
             <Icon name="logo-apple" size={40} color="#FFF" />
           ) : (
             <Image source={AppleIcon} style={styles.socialIcon} />
           )}
         </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.socialButton}
-          accessibilityLabel="Iniciar sesión con Google"
-        >
+        <TouchableOpacity style={styles.socialButton}>
           {theme === 'dark' ? (
             <Icon name="logo-google" size={40} color="#FFF" />
           ) : (
@@ -219,18 +170,12 @@ const LoginScreen = ({ navigation }) => {
 
       {/* Política de privacidad */}
       <View style={tw`flex-row justify-center`}>
-        <TouchableOpacity
-          style={styles.touchableText}
-          accessibilityLabel="Política de privacidad"
-        >
-          <Text style={[tw`text-lg`, { color: '#3D9FB3' }]}>Política de privacidad</Text>
+        <TouchableOpacity>
+          <Text style={[tw`text-xs`, { color: '#3D9FB3' }]}>Política de privacidad</Text>
         </TouchableOpacity>
-        <Text style={tw`mx-2 text-lg text-gray-500`}>|</Text>
-        <TouchableOpacity
-          style={styles.touchableText}
-          accessibilityLabel="Términos de uso"
-        >
-          <Text style={[tw`text-lg`, { color: '#3D9FB3' }]}>Términos de uso</Text>
+        <Text style={tw`mx-2 text-xs text-gray-500`}>|</Text>
+        <TouchableOpacity>
+          <Text style={[tw`text-xs`, { color: '#3D9FB3' }]}>Términos de uso</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -238,11 +183,33 @@ const LoginScreen = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
+  inputContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderRadius: 12,
+    borderWidth: 1,
+    paddingHorizontal: 12,
+    paddingVertical: 5,
+    marginBottom: 12,
+    backgroundColor: '#f9f8f9',
+  },
+  darkInput: {
+    borderColor: '#4B5563',
+  },
+  lightInput: {
+    borderColor: '#D1D5DB',
+  },
+  icon: {
+    marginRight: 8,
+  },
+  input: {
+    flex: 1,
+    fontSize: 14, // Tamaño reducido
+  },
   touchableIcon: {
-    width: 48,
-    height: 48,
     justifyContent: 'center',
     alignItems: 'center',
+    padding: 8,
   },
   socialButton: {
     width: 48,
@@ -255,19 +222,12 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
   },
-  touchableText: {
-    paddingHorizontal: 8,
-    paddingVertical: 12,
-  },
-  checkBoxWrapper: {
-    width: 48,
-    height: 48,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
   checkBox: {
     width: 24,
     height: 24,
+  },
+  touchableText: {
+    paddingHorizontal: 8,
   },
 });
 
