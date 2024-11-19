@@ -1,8 +1,9 @@
 import React, { useContext } from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import tw from 'twrnc';
-import InicioImagen from '../icons/inicioImagen.png'; // Ruta de tu imagen principal
-import Logo from '../icons/logotra.png'; // Ruta del logo de AcuaCode
+import InicioImagenBlanca from '../icons/InicioImagenBlanca.png'; // Imagen para modo claro
+import InicioImagenNegra from '../icons/InicioImagenNegra.png'; // Imagen para modo oscuro
+import Logo from '../icons/logotra.png'; // Logo de AcuaCode
 import { SettingsContext } from '../assets/SettingsContext'; // Contexto del tema (oscuro o claro)
 
 const InicioScreen = ({ navigation }) => {
@@ -16,7 +17,10 @@ const InicioScreen = ({ navigation }) => {
       ]}
     >
       {/* Círculos decorativos */}
-      <Image source={InicioImagen} style={styles.decorativeImage} />
+      <Image
+        source={theme === 'dark' ? InicioImagenNegra : InicioImagenBlanca} // Imagen según el tema
+        style={styles.decorativeImage}
+      />
 
       {/* Logo */}
       <Image source={Logo} style={styles.logo} />
