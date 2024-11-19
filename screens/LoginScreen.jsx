@@ -62,6 +62,26 @@ const LoginScreen = ({ navigation }) => {
         theme === 'dark' ? tw`bg-gray-800` : tw`bg-white`,
       ]}
     >
+      {/* Botón de Regresar */}
+      <TouchableOpacity
+        style={styles.backButton}
+        onPress={() => navigation.goBack()}
+      >
+        <Icon
+          name="arrow-back"
+          size={24}
+          color={theme === 'dark' ? '#FFF' : '#000'}
+        />
+        <Text
+          style={[
+            tw`ml-2 text-lg font-medium`,
+            theme === 'dark' ? tw`text-white` : tw`text-black`,
+          ]}
+        >
+          Regresar
+        </Text>
+      </TouchableOpacity>
+
       {/* Logo */}
       <Image source={Logo} style={tw`w-24 h-24 mx-auto mb-6`} />
 
@@ -123,7 +143,6 @@ const LoginScreen = ({ navigation }) => {
         </TouchableOpacity>
       </View>
 
-
       {/* Botón de ingresar */}
       <TouchableOpacity
         style={[
@@ -183,6 +202,13 @@ const LoginScreen = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
+  backButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    position: 'absolute',
+    top: 20,
+    left: 20,
+  },
   inputContainer: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -204,7 +230,7 @@ const styles = StyleSheet.create({
   },
   input: {
     flex: 1,
-    fontSize: 14, // Tamaño reducido
+    fontSize: 14,
   },
   touchableIcon: {
     justifyContent: 'center',
