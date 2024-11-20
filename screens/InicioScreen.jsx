@@ -9,15 +9,7 @@ import { SettingsContext } from '../assets/SettingsContext'; // Contexto del tem
 const InicioScreen = ({ navigation }) => {
   const { theme } = useContext(SettingsContext); // Obtiene el tema actual (oscuro o claro)
 
-  useEffect(() => {
-    // Establecer un temporizador para redirigir después de 5 segundos
-    const timer = setTimeout(() => {
-      navigation.navigate('Login'); // Redirige a la pantalla de login
-    }, 5000);
-
-    // Limpia el temporizador cuando el componente se desmonte
-    return () => clearTimeout(timer);
-  }, [navigation]);
+  
 
   return (
     <View

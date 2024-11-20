@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { View, Text, TextInput, Alert, TouchableOpacity, Image, StyleSheet } from 'react-native';
+import { View, Text, TextInput, Alert, TouchableOpacity, Image, StyleSheet, ActivityIndicator } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import CheckBox from '@react-native-community/checkbox';
 import { SettingsContext } from '../assets/SettingsContext';
@@ -19,6 +19,8 @@ const LoginScreen = ({ navigation }) => {
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
+
+  const [loading, setLoading] = useState(false); // Estado de carga
 
   const handleLogin = async () => {
     // Validaciones antes de enviar la petición
@@ -42,6 +44,8 @@ const LoginScreen = ({ navigation }) => {
       Alert.alert('Error', 'La contraseña debe tener al menos 6 caracteres.');
       return;
     }
+
+    setLoading(true); // Activar indicador de carga
   
     try {
       const response = await fetch(`${apiUrl}usuario/login`, {
@@ -74,6 +78,8 @@ const LoginScreen = ({ navigation }) => {
       }
     } catch (error) {
       Alert.alert('Error de conexión', error.message);
+    }finally {
+      setLoading(false); // Desactivar indicador de carga
     }
   };
   
@@ -84,6 +90,18 @@ const LoginScreen = ({ navigation }) => {
         theme === 'dark' ? tw`bg-gray-800` : tw`bg-white`,
       ]}
     >
+      {/* Indicador de carga */}
+      {loading && (
+        <View
+          style={[
+            tw`absolute inset-0 justify-center items-center`,
+            { backgroundColor: 'rgba(0, 0, 0, 0.5)', zIndex: 10 },
+          ]}
+        >
+          <ActivityIndicator size="large" color="#0CC0DF" />
+        </View>
+      )}
+      
       {/* Botón de Regresar */}
       <TouchableOpacity
         style={styles.backButton}

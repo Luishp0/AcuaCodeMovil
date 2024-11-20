@@ -59,6 +59,21 @@ const ResetPasswordScreen = ({ navigation, route }) => {
         theme === 'dark' ? tw`bg-gray-800` : tw`bg-white`,
       ]}
     >
+      {/* Botón de Regresar */}
+      <TouchableOpacity
+            onPress={() => navigation.goBack()}
+            style={tw`absolute top-4 left-4 flex-row items-center`}
+          >
+            <Icon name="arrow-back" size={24} color={theme === 'dark' ? '#FFF' : '#000'} />
+            <Text
+              style={[
+                tw`ml-2 text-xl font-medium`,
+                theme === 'dark' ? tw`text-white` : tw`text-black`,
+              ]}
+            >
+              Regresar
+            </Text>
+          </TouchableOpacity>
       <Text
         style={[
           tw`text-3xl font-semibold text-center mb-4`,
@@ -144,10 +159,10 @@ const ResetPasswordScreen = ({ navigation, route }) => {
       <TouchableOpacity
         style={[
           tw`py-4 rounded-md w-full`,
-          theme === 'dark' ? tw`bg-blue-500` : tw`bg-blue-600`,
-          !isMinLength || !hasNumber || !hasSpecialChar || !passwordsMatch
-            ? tw`opacity-50`
-            : null,
+          {
+            backgroundColor: theme === 'dark' ? '#064E66' : '#0CC0DF', // Color para modo oscuro y claro
+          },
+          
         ]}
         disabled={!isMinLength || !hasNumber || !hasSpecialChar || !passwordsMatch}
         onPress={handleSubmit}

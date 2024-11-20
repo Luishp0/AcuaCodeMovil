@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef, useContext } from 'react';
-import { View, Text, TextInput, Button, Alert, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TextInput, Alert, TouchableOpacity, StyleSheet } from 'react-native';
+import Icon from 'react-native-vector-icons/Ionicons'; // Importar el ícono
 import tw from 'twrnc';
 import Config from 'react-native-config';
 import { SettingsContext } from '../assets/SettingsContext';
@@ -98,6 +99,22 @@ const VerificationScreen = ({ navigation, route }) => {
         theme === 'dark' ? tw`bg-gray-800` : tw`bg-white`,
       ]}
     >
+      {/* Botón de Regresar */}
+      <TouchableOpacity
+            onPress={() => navigation.goBack()}
+            style={tw`absolute top-4 left-4 flex-row items-center`}
+          >
+            <Icon name="arrow-back" size={24} color={theme === 'dark' ? '#FFF' : '#000'} />
+            <Text
+              style={[
+                tw`ml-2 text-xl font-medium`,
+                theme === 'dark' ? tw`text-white` : tw`text-black`,
+              ]}
+            >
+              Regresar
+            </Text>
+          </TouchableOpacity>
+
       <Text
         style={[
           tw`text-3xl font-bold text-center mb-6`,
@@ -151,14 +168,42 @@ const VerificationScreen = ({ navigation, route }) => {
 
       <TouchableOpacity
         onPress={handleVerify}
-        style={[tw`py-3 rounded-lg mb-4`, theme === 'dark' ? tw`bg-blue-600` : tw`bg-blue-500`, styles.button]}
+        style={[
+          tw`p-4 mb-4 rounded-lg`,
+          {
+            backgroundColor: theme === 'dark' ? '#064E66' : '#0CC0DF', // Color para modo oscuro y claro
+          },
+        ]}
       >
-        <Text style={tw`text-white text-center text-lg font-bold`}>Verificar</Text>
+        <Text
+          style={[
+            tw`text-center text-lg font-bold`,
+            { color: '#FFFFFF' }, // El texto permanece blanco en ambos modos
+          ]}
+        >
+          Verificar
+        </Text>
       </TouchableOpacity>
 
-      <TouchableOpacity onPress={handleResendCode}>
-        <Text style={tw`text-blue-500 text-center text-lg`}>Enviar de Nuevo</Text>
-      </TouchableOpacity>
+
+     {/* Botón Enviar de Nuevo con contorno negro */}
+<TouchableOpacity
+  onPress={handleResendCode}
+  style={[
+    styles.resendButton,
+    { borderColor: '#000000' }, // Contorno negro
+    theme === 'dark' ? tw`bg-transparent` : tw`bg-white`, // Fondo transparente en oscuro, blanco en claro
+  ]}
+>
+  <Text
+    style={[
+      tw`text-center text-lg`,
+      theme === 'dark' ? tw`text-white` : tw`text-black`, // Texto blanco en oscuro, negro en claro
+    ]}
+  >
+    Enviar de Nuevo
+  </Text>
+</TouchableOpacity>
     </View>
   );
 };
@@ -170,8 +215,14 @@ const styles = StyleSheet.create({
     fontSize: 24,
     borderWidth: 2,
   },
-  button: {
-    width: '100%',
+  resendButton: {
+    borderWidth: 1,
+    width: 358,
+    height: 51,
+    borderRadius: 12,
+    paddingVertical: 10,
+    paddingHorizontal: 12,
+    alignSelf: 'center',
   },
 });
 

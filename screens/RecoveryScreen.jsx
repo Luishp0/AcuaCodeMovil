@@ -77,7 +77,8 @@ const RecoveryScreen = ({ navigation }) => {
               { backgroundColor: 'rgba(0, 0, 0, 0.5)', zIndex: 10 },
             ]}
           >
-            <ActivityIndicator size="large" color="#0CC0DF" />
+           <ActivityIndicator size="large" color="#0CC0DF" accessible={true} accessibilityLabel="Cargando" />
+
           </View>
         )}
 
@@ -167,7 +168,9 @@ const RecoveryScreen = ({ navigation }) => {
             <TouchableOpacity
               style={[
                 tw`py-4 rounded-lg`,
-                { backgroundColor: '#0CC0DF' },
+                { 
+                  backgroundColor: theme === 'dark' ? '#064E66' : '#0CC0DF', // Color para modo oscuro y claro
+                },
               ]}
               onPress={handlePasswordReset}
               disabled={loading} // Deshabilitar botón mientras carga

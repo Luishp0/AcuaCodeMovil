@@ -10,6 +10,7 @@ import {
   StyleSheet,
   ScrollView,
   KeyboardAvoidingView,
+  ActivityIndicator, // Importar ActivityIndicator
 } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import Config from 'react-native-config';
@@ -29,6 +30,7 @@ const RegisterScreen = ({ navigation }) => {
   const [contrasena, setContrasena] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [showDatePicker, setShowDatePicker] = useState(false);
+  const [loading, setLoading] = useState(false); // Estado para el indicador de carga
 
   const validateInputs = () => {
     if (!nombre.trim()) {
@@ -58,6 +60,8 @@ const RegisterScreen = ({ navigation }) => {
   const handleRegister = async () => {
     if (!validateInputs()) return;
 
+    setLoading(true); // Activar indicador de carga
+
     try {
       const response = await fetch(`${apiUrl}usuario`, {
         method: 'POST',
@@ -82,6 +86,8 @@ const RegisterScreen = ({ navigation }) => {
       }
     } catch (error) {
       Alert.alert('Error de conexión:', error.message);
+    }finally {
+      setLoading(false); // Desactivar indicador de carga
     }
   };
 
@@ -122,6 +128,18 @@ const RegisterScreen = ({ navigation }) => {
             theme === 'dark' ? tw`bg-gray-900` : tw`bg-white`,
           ]}
         >
+          {/* Indicador de carga */}
+          {loading && (
+            <View
+              style={[
+                tw`absolute inset-0 justify-center items-center`,
+                { backgroundColor: 'rgba(0, 0, 0, 0.5)', zIndex: 10 },
+              ]}
+            >
+              <ActivityIndicator size="large" color="#0CC0DF" />
+            </View>
+          )}
+
           {/* Botón de Regresar */}
           <TouchableOpacity
             onPress={() => navigation.goBack()}
@@ -277,7 +295,11 @@ const RegisterScreen = ({ navigation }) => {
           {/* Botón de Registrar */}
           <TouchableOpacity
             onPress={handleRegister}
-            style={[tw`p-4 mb-4 rounded-lg`, { backgroundColor: '#0CC0DF' }]}
+            style={[tw`p-4 mb-4 rounded-lg`, 
+              { 
+                backgroundColor: theme === 'dark' ? '#064E66' : '#0CC0DF', // Color para modo oscuro y claro
+              }
+              ]}
           >
             <Text style={tw`text-center text-white font-bold text-xl`}>Registrar</Text>
           </TouchableOpacity>
