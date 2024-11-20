@@ -21,6 +21,28 @@ const LoginScreen = ({ navigation }) => {
   const [rememberMe, setRememberMe] = useState(false);
 
   const handleLogin = async () => {
+    // Validaciones antes de enviar la petición
+    if (!email) {
+      Alert.alert('Error', 'Por favor, ingresa tu correo electrónico.');
+      return;
+    }
+  
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Valida el formato del correo
+    if (!emailRegex.test(email)) {
+      Alert.alert('Error', 'Por favor, ingresa un correo electrónico válido.');
+      return;
+    }
+  
+    if (!password) {
+      Alert.alert('Error', 'Por favor, ingresa tu contraseña.');
+      return;
+    }
+  
+    if (password.length < 6) {
+      Alert.alert('Error', 'La contraseña debe tener al menos 6 caracteres.');
+      return;
+    }
+  
     try {
       const response = await fetch(`${apiUrl}usuario/login`, {
         method: 'POST',
@@ -32,20 +54,20 @@ const LoginScreen = ({ navigation }) => {
           contrasena: password,
         }),
       });
-
+  
       const result = await response.json();
       if (response.ok) {
         Alert.alert('Inicio de sesión exitoso');
-
+  
         await AsyncStorage.setItem('userToken', result.result.token);
         await AsyncStorage.setItem('userData', JSON.stringify(result.result));
-
+  
         if (rememberMe) {
           await AsyncStorage.setItem('savedEmail', email);
         } else {
           await AsyncStorage.removeItem('savedEmail');
         }
-
+  
         navigation.navigate('Home');
       } else {
         Alert.alert('Error en el inicio de sesión', result.message || 'Usuario o contraseña incorrectos');
@@ -54,7 +76,7 @@ const LoginScreen = ({ navigation }) => {
       Alert.alert('Error de conexión', error.message);
     }
   };
-
+  
   return (
     <View
       style={[
@@ -132,12 +154,12 @@ const LoginScreen = ({ navigation }) => {
             tintColors={{ true: theme === 'dark' ? '#1DA1F2' : '#007AFF', false: '#aaa' }}
             style={styles.checkBox}
           />
-          <Text style={[tw`ml-3 text-sm font-bold`, theme === 'dark' ? tw`text-white` : tw`text-black`]}>Recordar</Text>
+          <Text style={[tw`ml-3 text-5x1 font-bold`, theme === 'dark' ? tw`text-white` : tw`text-black`]}>Recordar</Text>
         </View>
 
         {/* ¿Olvidaste la contraseña? */}
         <TouchableOpacity onPress={() => navigation.navigate('Recovery')} style={styles.touchableText}>
-          <Text style={[tw`text-blue-500 text-sm font-semibold`, { fontSize: 14, color: '#3D9FB3' }]}>
+          <Text style={[tw`text-blue-500 text-5x1 font-semibold`, {  color: '#3D9FB3' }]}>
             ¿Olvidaste la contraseña?
           </Text>
         </TouchableOpacity>
@@ -159,7 +181,7 @@ const LoginScreen = ({ navigation }) => {
       {/* Registrarse */}
       <Text
         style={[
-          tw`text-center mb-6 text-lg`,
+          tw`text-center mb-6 text-5x1`,
           theme === 'dark' ? tw`text-white` : tw`text-black`,
         ]}
       >
@@ -190,11 +212,11 @@ const LoginScreen = ({ navigation }) => {
       {/* Política de privacidad */}
       <View style={tw`flex-row justify-center`}>
         <TouchableOpacity>
-          <Text style={[tw`text-xs`, { color: '#3D9FB3' }]}>Política de privacidad</Text>
+          <Text style={[tw`text-5x1`, { color: '#3D9FB3' }]}>Política de privacidad</Text>
         </TouchableOpacity>
         <Text style={tw`mx-2 text-xs text-gray-500`}>|</Text>
         <TouchableOpacity>
-          <Text style={[tw`text-xs`, { color: '#3D9FB3' }]}>Términos de uso</Text>
+          <Text style={[tw`text-5x1`, { color: '#3D9FB3' }]}>Términos de uso</Text>
         </TouchableOpacity>
       </View>
     </View>

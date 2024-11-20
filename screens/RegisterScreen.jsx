@@ -285,13 +285,13 @@ const RegisterScreen = ({ navigation }) => {
           {/* Términos y condiciones */}
           <View style={tw`flex-row justify-center mb-4`}>
             <TouchableOpacity>
-              <Text style={[tw`text-sm font-semibold`, { color: '#3D9FB3' }]}>
+              <Text style={[tw`text-5x1 font-semibold`, { color: '#3D9FB3' }]}>
                 Política de privacidad
               </Text>
             </TouchableOpacity>
             <Text style={tw`mx-2 text-lg text-gray-500`}>|</Text>
             <TouchableOpacity>
-              <Text style={[tw`text-sm font-semibold`, { color: '#3D9FB3' }]}>
+              <Text style={[tw`text-5x1 font-semibold`, { color: '#3D9FB3' }]}>
                 Términos de uso
               </Text>
             </TouchableOpacity>

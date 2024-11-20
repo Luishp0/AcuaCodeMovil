@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import tw from 'twrnc';
 import InicioImagenBlanca from '../icons/InicioImagenBlanca.png'; // Imagen para modo claro
@@ -8,6 +8,16 @@ import { SettingsContext } from '../assets/SettingsContext'; // Contexto del tem
 
 const InicioScreen = ({ navigation }) => {
   const { theme } = useContext(SettingsContext); // Obtiene el tema actual (oscuro o claro)
+
+  useEffect(() => {
+    // Establecer un temporizador para redirigir después de 5 segundos
+    const timer = setTimeout(() => {
+      navigation.navigate('Login'); // Redirige a la pantalla de login
+    }, 5000);
+
+    // Limpia el temporizador cuando el componente se desmonte
+    return () => clearTimeout(timer);
+  }, [navigation]);
 
   return (
     <View
