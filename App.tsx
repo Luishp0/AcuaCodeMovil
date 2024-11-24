@@ -13,6 +13,7 @@ import RecoveryScreen from './screens/RecoveryScreen';
 import VerificationScreen from './screens/VerificationScreen';
 import ResetPasswordScreen from './screens/ResetPasswordScreen';
 import InicioScreen from './screens/InicioScreen';
+import NotificationScreen from './screens/NotificacionScreen';
 
 const Stack = createStackNavigator();
 
@@ -21,7 +22,7 @@ const AppNavigator = () => {
 
   return (
     <NavigationContainer theme={theme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack.Navigator initialRouteName="inicio" >
+      <Stack.Navigator initialRouteName="Notification" >
         <Stack.Screen name="inicio" component={InicioScreen} options={{ headerShown: false }} />
         <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
         <Stack.Screen name="Register" component={RegisterScreen} options={{ headerShown: false }}/>
@@ -33,6 +34,7 @@ const AppNavigator = () => {
         <Stack.Screen name="Verification" component={VerificationScreen} options={{ headerShown: false }}/>
         <Stack.Screen name="Reset" component={ResetPasswordScreen} options={{ headerShown: false }} />
         <Stack.Screen name="Settings" component={SettingsScreen} options={{ headerShown: false }}/>
+        <Stack.Screen name="Notification" component={NotificationScreen} options={{headerShown: false}}/>
         
       </Stack.Navigator>
     </NavigationContainer>

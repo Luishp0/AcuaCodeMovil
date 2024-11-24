@@ -43,7 +43,7 @@ const Navbar = ({ navigation }) => {
 
       {/* Icono de la campana */}
       <TouchableOpacity
-        onPress={() => handleNavigate('Notifications')}
+        onPress={() => handleNavigate('Notification')}
         style={[tw`absolute top-4 right-4 p-2`, { zIndex: 3 }]}
       >
         <Icon
