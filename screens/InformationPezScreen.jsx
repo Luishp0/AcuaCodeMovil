@@ -38,6 +38,7 @@ const InformacionPezScreen = () => {
             shadowOffset: { width: 0, height: 2 },
           },
         ]}
+        
       >
         {/* Imagen del pez */}
         <Image
