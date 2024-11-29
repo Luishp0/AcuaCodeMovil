@@ -105,7 +105,7 @@ const LoginScreen = ({ navigation }) => {
       {/* Botón de Regresar */}
       <TouchableOpacity
         style={styles.backButton}
-        onPress={() => navigation.goBack()}
+        onPress={() => navigation.navigate('inicio')}
       >
         <Icon
           name="arrow-back"

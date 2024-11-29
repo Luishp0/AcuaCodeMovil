@@ -11,10 +11,7 @@ const StartContentScreen = () => {
 
   return (
     <View
-      style={[
-        tw`flex-1`,
-        { backgroundColor: isDarkMode ? '#121212' : '#FFFFFF' }, // Fondo según el tema
-      ]}
+      style={[tw`flex-1`, isDarkMode ? tw`bg-gray-800` : tw`bg-white`]} // Fondo principal dinámico
     >
       {/* Contenedor principal */}
       <LinearGradient
@@ -22,6 +19,7 @@ const StartContentScreen = () => {
         style={[
           tw`w-11/12 self-center p-6 rounded-lg mt-10 flex-row justify-between items-center`,
           {
+            backgroundColor: isDarkMode ? '#37474F' : undefined, // Fondo dinámico para el modo oscuro
             borderRadius: 12,
             shadowColor: isDarkMode ? '#000000' : '#000',
             shadowOpacity: 0.1,
@@ -32,28 +30,13 @@ const StartContentScreen = () => {
       >
         {/* Contenedor del texto (izquierda) */}
         <View style={tw`flex-1`}>
-          <Text
-            style={[
-              tw`text-2xl font-bold mb-2`,
-              { color: '#FFFFFF' },
-            ]}
-          >
+          <Text style={[tw`text-2xl font-bold mb-2`, { color: '#FFFFFF' }]}>
             AcuaCode
           </Text>
-          <Text
-            style={[
-              tw`text-base mb-2`,
-              { color: '#FFFFFF' },
-            ]}
-          >
+          <Text style={[tw`text-base mb-2`, { color: '#FFFFFF' }]}>
             Condición de la pecera:
           </Text>
-          <Text
-            style={[
-              tw`text-sm`,
-              { color: '#FFFFFF' },
-            ]}
-          >
+          <Text style={[tw`text-sm`, { color: '#FFFFFF' }]}>
             La pecera se encuentra en excelentes condiciones.
           </Text>
         </View>

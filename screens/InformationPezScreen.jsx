@@ -13,7 +13,7 @@ const InformacionPezScreen = () => {
     <View
       style={[
         tw`flex-1 p-4`,
-        { backgroundColor: isDarkMode ? '#121212' : '#FFFFFF' }, // Fondo dinámico según tema
+        { backgroundColor: isDarkMode ? tw`bg-gray-800` : tw`bg-white` }, // Fondo dinámico según tema
       ]}
     >
       {/* Encabezado */}
