@@ -8,6 +8,12 @@ export const SettingsProvider = ({ children }) => {
   const [theme, setTheme] = useState(systemTheme || 'light'); // Inicializa con el tema del sistema o 'light' por defecto
   const [language, setLanguage] = useState('es'); // Idioma inicial
   const [notificationsEnabled, setNotificationsEnabled] = useState(true); // Notificaciones habilitadas por defecto
+  const [registeredPeces, setRegisteredPeces] = useState([]); // Lista de peces registrados
+
+  const addPez = (pez) => {
+    setRegisteredPeces((prevPeces) => [...prevPeces, pez]);
+  };
+
 
   // Actualiza el tema cuando el sistema cambia entre claro y oscuro
   useEffect(() => {
@@ -38,6 +44,8 @@ export const SettingsProvider = ({ children }) => {
         changeLanguage,
         notificationsEnabled,
         toggleNotifications,
+        registeredPeces,
+        addPez, // Incluye addPez para que esté disponible en los componentes
       }}
     >
       {children}

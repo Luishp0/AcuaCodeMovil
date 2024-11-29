@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { View, Text, TextInput, FlatList, Image, TouchableOpacity } from 'react-native';
+import { View, Text, TextInput, FlatList, Image, TouchableOpacity, Alert, Modal } from 'react-native';
 import tw from 'twrnc';
 import Icon from 'react-native-vector-icons/Ionicons'; // Importa los íconos
 import { SettingsContext } from '../assets/SettingsContext';
@@ -9,7 +9,7 @@ import Betta from '../img/Betta.png';
 import Platy from '../img/Platy.png';
 
 const CollectionPeces = ({ navigation }) => {
-  const { theme } = useContext(SettingsContext); // Obtenemos el tema actual
+  const { theme, registeredPeces, addPez } = useContext(SettingsContext); // Usamos `addPez` del contexto
   const isDarkMode = theme === 'dark';
 
   const peces = [
@@ -21,6 +21,9 @@ const CollectionPeces = ({ navigation }) => {
 
   const [searchText, setSearchText] = useState(''); // Estado para el texto de búsqueda
   const [filteredPeces, setFilteredPeces] = useState(peces); // Lista filtrada
+  const [isModalVisible, setIsModalVisible] = useState(false); // Estado del modal
+  const [customName, setCustomName] = useState(''); // Estado para el nombre personalizado
+  const [selectedPez, setSelectedPez] = useState(null); // Estado del pez seleccionado
 
   // Filtrar peces en base al texto de búsqueda
   const handleSearch = (text) => {
@@ -33,6 +36,23 @@ const CollectionPeces = ({ navigation }) => {
       );
       setFilteredPeces(filtered); // Actualizar la lista filtrada
     }
+  };
+
+  // Manejar la adición del pez
+  const handleAddPez = () => {
+    if (customName.trim() === '') {
+      Alert.alert('Error', 'Por favor ingresa un nombre.');
+      return;
+    }
+
+    addPez({
+      id: selectedPez.id,
+      name: `${selectedPez.name} - ${customName}`,
+    });
+
+    setIsModalVisible(false);
+    setCustomName('');
+    Alert.alert('Éxito', 'El pez ha sido registrado.');
   };
 
   return (
@@ -106,6 +126,10 @@ const CollectionPeces = ({ navigation }) => {
                   tw`absolute top-2 right-2 w-10 h-10 rounded-full items-center justify-center`,
                   { backgroundColor: '#36B3DA' },
                 ]}
+                onPress={() => {
+                  setSelectedPez(item);
+                  setIsModalVisible(true);
+                }} // Abre el modal para asignar nombre
               >
                 <Icon name="add" size={24} color="#FFFFFF" />
               </TouchableOpacity>
@@ -121,24 +145,74 @@ const CollectionPeces = ({ navigation }) => {
               >
                 {item.name}
               </Text>
-
-              {/* Botón de detalle */}
-              <TouchableOpacity
-                style={[
-                  tw`w-10 h-10 rounded-full items-center justify-center`,
-                  {
-                    borderColor: '#36B3DA',
-                    borderWidth: 2,
-                    backgroundColor: isDarkMode ? '#1F2937' : '#FFFFFF',
-                  },
-                ]}
-              >
-                <Icon name="arrow-forward" size={24} color={isDarkMode ? '#60A5FA' : '#1E3A8A'} />
-              </TouchableOpacity>
             </View>
           </View>
         )}
       />
+
+      {/* Modal para asignar nombre */}
+      <Modal
+        visible={isModalVisible}
+        transparent
+        animationType="slide"
+        onRequestClose={() => setIsModalVisible(false)}
+      >
+        <View
+          style={[
+            tw`flex-1 justify-center items-center`,
+            { backgroundColor: 'rgba(0, 0, 0, 0.5)' },
+          ]}
+        >
+          <View
+            style={[
+              tw`w-11/12 p-6 rounded-lg`,
+              { backgroundColor: isDarkMode ? '#374151' : '#FFFFFF' },
+            ]}
+          >
+            <Text
+              style={[
+                tw`text-lg font-bold mb-4`,
+                { color: isDarkMode ? '#FFFFFF' : '#000000' },
+              ]}
+            >
+              Asignar nombre al pez
+            </Text>
+            <TextInput
+              placeholder="Escribe el nombre del pez"
+              placeholderTextColor={isDarkMode ? '#B0BEC5' : '#6B7280'}
+              style={[
+                tw`w-full px-4 py-2 rounded-lg mb-4`,
+                {
+                  backgroundColor: isDarkMode ? '#1F2937' : '#F3F4F6',
+                  color: isDarkMode ? '#FFFFFF' : '#000000',
+                },
+              ]}
+              value={customName}
+              onChangeText={(text) => setCustomName(text)}
+            />
+            <View style={tw`flex-row justify-between`}>
+              <TouchableOpacity
+                onPress={() => setIsModalVisible(false)}
+                style={[
+                  tw`px-6 py-3 rounded-lg`,
+                  { backgroundColor: '#B0BEC5' },
+                ]}
+              >
+                <Text style={tw`text-white font-bold text-lg`}>Cancelar</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={handleAddPez}
+                style={[
+                  tw`px-6 py-3 rounded-lg`,
+                  { backgroundColor: '#36B3DA' },
+                ]}
+              >
+                <Text style={tw`text-white font-bold text-lg`}>Agregar</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 };
