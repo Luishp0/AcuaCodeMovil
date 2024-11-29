@@ -1,37 +1,86 @@
-import React from "react";
-import { View, Text } from "react-native";
-import { useTailwind } from "tailwind-rn";
+import React, { useContext } from 'react';
+import { View, Text } from 'react-native';
+import LinearGradient from 'react-native-linear-gradient';
+import tw from 'twrnc';
+import { SettingsContext } from '../assets/SettingsContext';
 
 const StartContentScreen = () => {
-  const tailwind = useTailwind();
+  const { theme } = useContext(SettingsContext);
+
+  const isDarkMode = theme === 'dark';
 
   return (
-    <View style={tailwind("flex-1 justify-center items-center bg-blue-200")}>
-      {/* Main Card */}
-      <View style={tailwind("w-11/12 bg-blue-500 rounded-lg p-6")}>
-        {/* Header */}
-        <Text style={tailwind("text-white text-xl font-bold mb-4")}>
-          AcuaCode
-        </Text>
-        {/* Fish Tank Condition Text */}
-        <Text style={tailwind("text-white text-lg mb-2")}>
-          Condición de la pecera:
-        </Text>
-        <Text style={tailwind("text-white mb-6")}>
-          La pecera se encuentra en excelentes condiciones.
-        </Text>
-        {/* Gauge / Status */}
-        <View style={tailwind("items-center")}>
-          <View
+    <View
+      style={[
+        tw`flex-1`,
+        { backgroundColor: isDarkMode ? '#121212' : '#FFFFFF' }, // Fondo según el tema
+      ]}
+    >
+      {/* Contenedor principal */}
+      <LinearGradient
+        colors={['#3D84A7', '#36B3DA', '#00A6F7']} // Colores del degradado
+        style={[
+          tw`w-11/12 self-center p-6 rounded-lg mt-10 flex-row justify-between items-center`,
+          {
+            borderRadius: 12,
+            shadowColor: isDarkMode ? '#000000' : '#000',
+            shadowOpacity: 0.1,
+            shadowRadius: 8,
+            shadowOffset: { width: 0, height: 2 },
+          },
+        ]}
+      >
+        {/* Contenedor del texto (izquierda) */}
+        <View style={tw`flex-1`}>
+          <Text
             style={[
-              tailwind("bg-white rounded-full items-center justify-center"),
-              { width: 150, height: 75, overflow: "hidden" },
+              tw`text-2xl font-bold mb-2`,
+              { color: '#FFFFFF' },
             ]}
           >
-            <Text style={tailwind("text-blue-500 text-xl font-bold")}>100%</Text>
-          </View>
+            AcuaCode
+          </Text>
+          <Text
+            style={[
+              tw`text-base mb-2`,
+              { color: '#FFFFFF' },
+            ]}
+          >
+            Condición de la pecera:
+          </Text>
+          <Text
+            style={[
+              tw`text-sm`,
+              { color: '#FFFFFF' },
+            ]}
+          >
+            La pecera se encuentra en excelentes condiciones.
+          </Text>
         </View>
-      </View>
+
+        {/* Indicador semicircular (derecha) */}
+        <View
+          style={{
+            width: 150,
+            height: 75,
+            borderTopLeftRadius: 75,
+            borderTopRightRadius: 75,
+            backgroundColor: isDarkMode ? '#37474F' : '#FFFFFF', // Indicador según el tema
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
+          <Text
+            style={{
+              color: isDarkMode ? '#00A6F7' : '#3D84A7',
+              fontSize: 18,
+              fontWeight: 'bold',
+            }}
+          >
+            100%
+          </Text>
+        </View>
+      </LinearGradient>
     </View>
   );
 };

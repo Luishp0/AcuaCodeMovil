@@ -14,6 +14,8 @@ import VerificationScreen from './screens/VerificationScreen';
 import ResetPasswordScreen from './screens/ResetPasswordScreen';
 import InicioScreen from './screens/InicioScreen';
 import NotificationScreen from './screens/NotificacionScreen';
+import StartContentScreen from './screens/StartContentScreen';
+import InformacionPezScreen from './screens/InformationPezScreen';
 
 const Stack = createStackNavigator();
 
@@ -22,7 +24,7 @@ const AppNavigator = () => {
 
   return (
     <NavigationContainer theme={theme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack.Navigator initialRouteName="Notification" >
+      <Stack.Navigator initialRouteName="InformationPez" >
         <Stack.Screen name="inicio" component={InicioScreen} options={{ headerShown: false }} />
         <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
         <Stack.Screen name="Register" component={RegisterScreen} options={{ headerShown: false }}/>
@@ -35,6 +37,9 @@ const AppNavigator = () => {
         <Stack.Screen name="Reset" component={ResetPasswordScreen} options={{ headerShown: false }} />
         <Stack.Screen name="Settings" component={SettingsScreen} options={{ headerShown: false }}/>
         <Stack.Screen name="Notification" component={NotificationScreen} options={{headerShown: false}}/>
+
+        <Stack.Screen name="Start" component={StartContentScreen} options={{headerShown: false}} />
+        <Stack.Screen name="InformationPez" component={InformacionPezScreen} options={{headerShown: false}} />
         
       </Stack.Navigator>
     </NavigationContainer>
