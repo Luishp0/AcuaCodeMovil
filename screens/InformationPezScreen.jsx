@@ -1,10 +1,10 @@
 import React, { useContext } from 'react';
-import { View, Text, Image } from 'react-native';
+import { View, Text, Image, TouchableOpacity } from 'react-native';
 import tw from 'twrnc';
 import { SettingsContext } from '../assets/SettingsContext';
 import PezInicial from '../img/PezInicial.png';
 
-const InformacionPezScreen = () => {
+const InformacionPezScreen = ({ navigation }) => {
   const { theme } = useContext(SettingsContext);
 
   const isDarkMode = theme === 'dark';
@@ -13,7 +13,7 @@ const InformacionPezScreen = () => {
     <View
       style={[
         tw`flex-1 p-4`,
-        { backgroundColor: isDarkMode ? tw`bg-gray-800` : tw`bg-white` }, // Fondo dinámico según tema
+        { backgroundColor: isDarkMode ? '#1F2937' : '#FFFFFF' }, // Fondo dinámico según tema
       ]}
     >
       {/* Encabezado */}
@@ -27,7 +27,7 @@ const InformacionPezScreen = () => {
       </Text>
 
       {/* Contenedor de la tarjeta */}
-      <View
+      <TouchableOpacity
         style={[
           tw`rounded-lg overflow-hidden border-2`,
           {
@@ -38,7 +38,7 @@ const InformacionPezScreen = () => {
             shadowOffset: { width: 0, height: 2 },
           },
         ]}
-        
+        onPress={() => navigation.navigate('CollectionPeces')} // Redirigir al presionar la tarjeta
       >
         {/* Imagen del pez */}
         <Image
@@ -58,23 +58,17 @@ const InformacionPezScreen = () => {
           ]}
         >
           <Text
-            style={[
-              tw`text-xl font-bold`,
-              { color: '#FFFFFF' }, // Texto blanco
-            ]}
+            style={[tw`text-xl font-bold`, { color: '#FFFFFF' }]} // Texto blanco
           >
             Peces
           </Text>
           <Text
-            style={[
-              tw`text-sm`,
-              { color: '#FFFFFF' }, // Texto blanco
-            ]}
+            style={[tw`text-sm`, { color: '#FFFFFF' }]} // Texto blanco
           >
             Especies de peces para acuarios
           </Text>
         </View>
-      </View>
+      </TouchableOpacity>
     </View>
   );
 };

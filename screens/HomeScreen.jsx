@@ -14,14 +14,12 @@ const HomeScreen = ({ navigation }) => {
     <View style={[tw`flex-1`, theme === 'dark' ? tw`bg-gray-800` : tw`bg-white`]}>
       {/* Incluir el Navbar */}
       <Navbar navigation={navigation} />
-      {/* Título */}
       
-
-      {/* Contenido de la pantalla en un ScrollView */}
+      {/* Título */}
       <ScrollView style={tw`flex-1`} contentContainerStyle={tw`p-4`}>
-      <Text style={[tw`text-2xl font-bold px-4`, theme === 'dark' ? tw`text-white` : tw`text-black`]}>
-        Bienvenido
-      </Text>
+        <Text style={[tw`text-2xl font-bold px-4`, theme === 'dark' ? tw`text-white` : tw`text-black`]}>
+          Bienvenido
+        </Text>
         
         {/* Componente 1: StartContentScreen */}
         <View style={tw`mb-6`}>
@@ -30,7 +28,8 @@ const HomeScreen = ({ navigation }) => {
 
         {/* Componente 2: InformacionPezScreen */}
         <View style={tw`mb-6`}>
-          <InformacionPezScreen />
+          {/* Pasa la navegación como prop */}
+          <InformacionPezScreen navigation={navigation} />
         </View>
 
         {/* Componente 3: RegisterPecesScreen */}
