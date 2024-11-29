@@ -14,7 +14,6 @@ const CalendarScreen = ({ navigation }) => {
     { time: "08:00 am", title: "Alimentación", description: "¡Vamos!", color: "#A5D6A7" },
     { time: "09:45 am", title: "Mantenimiento", description: "Toca checar la pecera", color: "#FFCCBC" },
     { time: "10:50 am", title: "Nivel de pH alto", description: "¡Atención!", color: "#EF9A9A" },
-    { time: "02:40 pm", title: "Estadísticas", description: "Visualizar datos de la semana", color: "#CE93D8" },
   ];
 
   return (
@@ -31,6 +30,16 @@ const CalendarScreen = ({ navigation }) => {
         style={tw`flex-1`}
         contentContainerStyle={tw`pb-6`}
       >
+        <View style={tw`p-4`}>
+          <Text
+            style={[
+              tw`text-center text-xl font-bold`,
+              theme === "dark" ? tw`text-white` : tw`text-black`,
+            ]}
+          >
+            Calendario
+          </Text>
+        </View>
         {/* Calendario */}
         <View style={tw`p-4`}>
           <Calendar

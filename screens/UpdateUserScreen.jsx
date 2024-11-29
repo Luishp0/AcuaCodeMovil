@@ -57,9 +57,17 @@ const UpdateUserScreen = ({ navigation }) => {
     <View style={[tw`flex-1`, theme === 'dark' ? tw`bg-gray-800` : tw`bg-white`]}>
       {/* Navbar */}
       <Navbar navigation={navigation} />
-
+      <Text
+            style={[
+              tw`text-center text-xl font-bold`,
+              theme === "dark" ? tw`text-white` : tw`text-black`,
+            ]}
+          >
+            Actualizar Perfil
+          </Text>
       {/* Contenido desplazable */}
       <ScrollView contentContainerStyle={tw`px-4 pt-4 pb-10`}>
+      
         {/* Imagen de perfil */}
         <TouchableOpacity onPress={handleImagePick} style={tw`items-center mb-4`}>
           {profileImage ? (

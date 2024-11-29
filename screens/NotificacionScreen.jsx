@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { View, Text, TouchableOpacity, ScrollView, Alert } from 'react-native';
 import tw from 'twrnc';
 import { SettingsContext } from '../assets/SettingsContext';
@@ -7,7 +7,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 const NotificationScreen = ({ navigation }) => {
   const { theme } = useContext(SettingsContext);
 
-  const notifications = [
+  const [notifications, setNotifications] = useState([
     {
       id: 1,
       icon: 'restaurant-outline',
@@ -32,10 +32,13 @@ const NotificationScreen = ({ navigation }) => {
       color: 'purple',
       message: 'Nuevas estadísticas disponibles. Echa un vistazo a los cambios recientes en el ambiente de tu pecera.',
     },
-  ];
+  ]);
 
   const markAsRead = () => {
-    Alert.alert('Notificaciones', 'Notificaciones leídas', [{ text: 'OK' }]);
+    setNotifications([]); // Vacía la lista de notificaciones
+    Alert.alert('Notificaciones', 'Todas las notificaciones han sido marcadas como leídas.', [
+      { text: 'OK' },
+    ]);
   };
 
   return (
@@ -68,34 +71,42 @@ const NotificationScreen = ({ navigation }) => {
 
       {/* Lista de notificaciones */}
       <ScrollView contentContainerStyle={tw`p-4`}>
-        {notifications.map((notification) => (
-          <View
-            key={notification.id}
-            style={[
-              tw`flex-row items-center p-4 mb-4 rounded-lg shadow-sm`,
-              theme === 'dark' ? tw`bg-gray-700` : tw`bg-gray-100`,
-            ]}
-          >
-            {/* Icono con color */}
+        {notifications.length > 0 ? (
+          notifications.map((notification) => (
             <View
+              key={notification.id}
               style={[
-                tw`w-14 h-14 rounded-full justify-center items-center`,
-                { backgroundColor: `${notification.color}20` },
+                tw`flex-row items-center p-4 mb-4 rounded-lg shadow-sm`,
+                theme === 'dark' ? tw`bg-gray-700` : tw`bg-gray-100`,
               ]}
             >
-              <Icon name={notification.icon} size={32} color={notification.color} />
-            </View>
-            {/* Contenedor del texto */}
-            <View style={tw`flex-1 ml-4`}>
-              <Text
-                style={[tw`text-lg`, theme === 'dark' ? tw`text-white` : tw`text-gray-800`]}
-                numberOfLines={4}
+              {/* Icono con color */}
+              <View
+                style={[
+                  tw`w-14 h-14 rounded-full justify-center items-center`,
+                  { backgroundColor: `${notification.color}20` },
+                ]}
               >
-                {notification.message}
-              </Text>
+                <Icon name={notification.icon} size={32} color={notification.color} />
+              </View>
+              {/* Contenedor del texto */}
+              <View style={tw`flex-1 ml-4`}>
+                <Text
+                  style={[tw`text-lg`, theme === 'dark' ? tw`text-white` : tw`text-gray-800`]}
+                  numberOfLines={4}
+                >
+                  {notification.message}
+                </Text>
+              </View>
             </View>
-          </View>
-        ))}
+          ))
+        ) : (
+          <Text
+            style={[tw`text-center text-lg mt-10`, theme === 'dark' ? tw`text-white` : tw`text-gray-700`]}
+          >
+            No tienes notificaciones pendientes.
+          </Text>
+        )}
       </ScrollView>
     </View>
   );
