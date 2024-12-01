@@ -9,14 +9,14 @@ import Betta from '../img/Betta.png';
 import Platy from '../img/Platy.png';
 
 const CollectionPeces = ({ navigation }) => {
-  const { theme, registeredPeces, addPez } = useContext(SettingsContext); // Usamos `addPez` del contexto
+  const { theme, addPez } = useContext(SettingsContext); // Usamos `addPez` del contexto
   const isDarkMode = theme === 'dark';
 
   const peces = [
-    { id: '1', name: 'Guppy', image: Guppy },
-    { id: '2', name: 'Cosmic Blue', image: CosmicBlue },
-    { id: '3', name: 'Betta', image: Betta },
-    { id: '4', name: 'Platy', image: Platy },
+    { id: '1', name: 'Guppy', image: Guppy, route: 'InformationGuppy' },
+    { id: '2', name: 'Cosmic Blue', image: CosmicBlue, route: 'InformationCosmicBlue' },
+    { id: '3', name: 'Betta', image: Betta, route: 'InformationBetta' },
+    { id: '4', name: 'Platy', image: Platy, route: 'InformationPlaty' },
   ];
 
   const [searchText, setSearchText] = useState(''); // Estado para el texto de búsqueda
@@ -27,14 +27,14 @@ const CollectionPeces = ({ navigation }) => {
 
   // Filtrar peces en base al texto de búsqueda
   const handleSearch = (text) => {
-    setSearchText(text); // Actualizar el texto del buscador
+    setSearchText(text);
     if (text === '') {
-      setFilteredPeces(peces); // Mostrar todos los peces si no hay texto
+      setFilteredPeces(peces);
     } else {
       const filtered = peces.filter((pez) =>
         pez.name.toLowerCase().includes(text.toLowerCase())
       );
-      setFilteredPeces(filtered); // Actualizar la lista filtrada
+      setFilteredPeces(filtered);
     }
   };
 
@@ -59,7 +59,7 @@ const CollectionPeces = ({ navigation }) => {
     <View
       style={[
         tw`flex-1 p-4`,
-        { backgroundColor: isDarkMode ? '#1F2937' : '#FFFFFF' }, // Fondo dinámico
+        { backgroundColor: isDarkMode ? '#1F2937' : '#FFFFFF' },
       ]}
     >
       {/* Header */}
@@ -92,13 +92,13 @@ const CollectionPeces = ({ navigation }) => {
           placeholder="Buscar"
           placeholderTextColor={isDarkMode ? '#9CA3AF' : '#6B7280'}
           value={searchText}
-          onChangeText={handleSearch} // Manejar el texto de búsqueda
+          onChangeText={handleSearch}
         />
       </View>
 
       {/* Lista de peces */}
       <FlatList
-        data={filteredPeces} // Usar la lista filtrada
+        data={filteredPeces}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
           <View
@@ -117,31 +117,37 @@ const CollectionPeces = ({ navigation }) => {
             <View style={tw`relative`}>
               <Image
                 source={item.image}
-                style={[tw`w-full h-40 rounded-lg`, { resizeMode: 'cover' }]} // Imágenes más grandes
+                style={[tw`w-full h-40 rounded-lg`, { resizeMode: 'cover' }]}
               />
 
-              {/* Botón de agregar dentro de la imagen */}
+              {/* Botón de agregar */}
               <TouchableOpacity
-                style={[
-                  tw`absolute top-2 right-2 w-10 h-10 rounded-full items-center justify-center`,
-                  { backgroundColor: '#36B3DA' },
-                ]}
+                style={[tw`absolute top-2 right-2 w-10 h-10 rounded-full items-center justify-center`, {
+                  backgroundColor: '#36B3DA',
+                }]}
                 onPress={() => {
                   setSelectedPez(item);
                   setIsModalVisible(true);
-                }} // Abre el modal para asignar nombre
+                }}
               >
                 <Icon name="add" size={24} color="#FFFFFF" />
+              </TouchableOpacity>
+
+              {/* Botón de redirección */}
+              <TouchableOpacity
+                style={[tw`absolute bottom-2 right-2 w-10 h-10 rounded-full items-center justify-center`, {
+                  backgroundColor: '#4CAF50',
+                }]}
+                onPress={() => navigation.navigate(item.route)}
+              >
+                <Icon name="arrow-forward" size={24} color="#FFFFFF" />
               </TouchableOpacity>
             </View>
 
             {/* Información del pez */}
             <View style={tw`flex-row items-center justify-between px-4 py-3`}>
               <Text
-                style={[
-                  tw`text-lg font-bold`,
-                  { color: isDarkMode ? '#FFFFFF' : '#000000' },
-                ]}
+                style={[tw`text-lg font-bold`, { color: isDarkMode ? '#FFFFFF' : '#000000' }]}
               >
                 {item.name}
               </Text>
@@ -170,10 +176,7 @@ const CollectionPeces = ({ navigation }) => {
             ]}
           >
             <Text
-              style={[
-                tw`text-lg font-bold mb-4`,
-                { color: isDarkMode ? '#FFFFFF' : '#000000' },
-              ]}
+              style={[tw`text-lg font-bold mb-4`, { color: isDarkMode ? '#FFFFFF' : '#000000' }]}
             >
               Asignar nombre al pez
             </Text>
@@ -193,19 +196,13 @@ const CollectionPeces = ({ navigation }) => {
             <View style={tw`flex-row justify-between`}>
               <TouchableOpacity
                 onPress={() => setIsModalVisible(false)}
-                style={[
-                  tw`px-6 py-3 rounded-lg`,
-                  { backgroundColor: '#B0BEC5' },
-                ]}
+                style={[tw`px-6 py-3 rounded-lg`, { backgroundColor: '#B0BEC5' }]}
               >
                 <Text style={tw`text-white font-bold text-lg`}>Cancelar</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={handleAddPez}
-                style={[
-                  tw`px-6 py-3 rounded-lg`,
-                  { backgroundColor: '#36B3DA' },
-                ]}
+                style={[tw`px-6 py-3 rounded-lg`, { backgroundColor: '#36B3DA' }]}
               >
                 <Text style={tw`text-white font-bold text-lg`}>Agregar</Text>
               </TouchableOpacity>

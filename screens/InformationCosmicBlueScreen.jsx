@@ -38,7 +38,7 @@ const InformationCosmicBlueScreen = ({ navigation }) => {
         {/* Botón de regreso */}
         <TouchableOpacity
           style={tw`absolute top-3 left-3 flex-row items-center`}
-          onPress={() => navigation.navigate("Home")}
+          onPress={() => navigation.navigate("CollectionPeces")}
         >
           <Icon
             name="arrow-back"
