@@ -1,14 +1,23 @@
 import React, { useContext } from 'react';
-import { View, Text, Image, ScrollView, TouchableOpacity } from 'react-native';
+import { View, Text, Image, ScrollView, TouchableOpacity, Dimensions } from 'react-native';
 import tw from 'twrnc';
 import Icon from 'react-native-vector-icons/Ionicons'; // Icono para el botón de regreso
 import { SettingsContext } from '../assets/SettingsContext';
 import Guppy from '../img/Guppy.jpg';
+import GuppyUno from '../img/Guppy/GuppyUno.png';
+import GuppyDos from '../img/Guppy/GuppyDos.png';
+import GuppyTres from '../img/Guppy/GuppyTres.png';
+import GuppyCuatro from '../img/Guppy/GuppyCuatro.png';
+import GuppyCinco from '../img/Guppy/GuppyCinco.png';
+
+const { width } = Dimensions.get('window'); // Obtiene el ancho de la pantalla
 
 const InformationGuppyScreen = ({ navigation }) => {
   const { theme } = useContext(SettingsContext); // Contexto para el tema
 
   const textColor = theme === 'dark' ? tw`text-white` : tw`text-black`;
+
+  const images = [GuppyUno, GuppyDos, GuppyTres, GuppyCuatro, GuppyCinco];
 
   return (
     <ScrollView
@@ -27,7 +36,7 @@ const InformationGuppyScreen = ({ navigation }) => {
         {/* Botón de regreso */}
         <TouchableOpacity
           style={tw`absolute top-3 left-3 flex-row items-center`}
-          onPress={() => navigation.goBack()}
+          onPress={() => navigation.navigate('Home')}
         >
           <Icon
             name="arrow-back"
@@ -55,42 +64,22 @@ const InformationGuppyScreen = ({ navigation }) => {
           Parámetros del Entorno Acuático
         </Text>
         <View style={tw`flex-row flex-wrap justify-between mt-4`}>
-          <View style={tw`w-1/2 p-3`}>
-            <Text style={[tw`font-bold`, textColor, { fontSize: 18 }]}>
-              Temperatura
-            </Text>
-            <Text style={[textColor, { fontSize: 16 }]}>24-28°C</Text>
-          </View>
-          <View style={tw`w-1/2 p-3`}>
-            <Text style={[tw`font-bold`, textColor, { fontSize: 18 }]}>
-              pH
-            </Text>
-            <Text style={[textColor, { fontSize: 16 }]}>7.0-7.8</Text>
-          </View>
-          <View style={tw`w-1/2 p-3`}>
-            <Text style={[tw`font-bold`, textColor, { fontSize: 18 }]}>
-              Oxígeno
-            </Text>
-            <Text style={[textColor, { fontSize: 16 }]}>5-8 mg/l</Text>
-          </View>
-          <View style={tw`w-1/2 p-3`}>
-            <Text style={[tw`font-bold`, textColor, { fontSize: 18 }]}>
-              Dureza
-            </Text>
-            <Text style={[textColor, { fontSize: 16 }]}>8-12 dGH</Text>
-          </View>
-          <View style={tw`w-1/2 p-3`}>
-            <Text style={[tw`font-bold`, textColor, { fontSize: 18 }]}>
-              Nitritos
-            </Text>
-            <Text style={[textColor, { fontSize: 16 }]}>0 ppm</Text>
-          </View>
-          <View style={tw`w-1/2 p-3`}>
-            <Text style={[tw`font-bold`, textColor, { fontSize: 18 }]}>
-              Nitratos
-            </Text>
-            <Text style={[textColor, { fontSize: 16 }]}>{"<"}40 ppm</Text>
-          </View>
+          {/* Parámetros individuales */}
+          {[
+            { label: 'Temperatura', value: '24-28°C' },
+            { label: 'pH', value: '7.0-7.8' },
+            { label: 'Oxígeno', value: '5-8 mg/l' },
+            { label: 'Dureza', value: '8-12 dGH' },
+            { label: 'Nitritos', value: '0 ppm' },
+            { label: 'Nitratos', value: '<40 ppm' },
+          ].map((param, index) => (
+            <View key={index} style={tw`w-1/2 p-3`}>
+              <Text style={[tw`font-bold`, textColor, { fontSize: 18 }]}>
+                {param.label}
+              </Text>
+              <Text style={[textColor, { fontSize: 16 }]}>{param.value}</Text>
+            </View>
+          ))}
         </View>
       </View>
 
@@ -106,6 +95,35 @@ const InformationGuppyScreen = ({ navigation }) => {
           vegetales. Es importante no sobrealimentarlos y ofrecer una dieta
           equilibrada para mantener su salud.
         </Text>
+      </View>
+
+      {/* Carrusel de imágenes */}
+      <View style={tw`p-4 mt-8`}>
+        <Text style={[tw`font-bold mb-4`, textColor, { fontSize: 20 }]}>
+          Galería
+        </Text>
+        <ScrollView
+          horizontal
+          pagingEnabled
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={tw`items-center`}
+        >
+          {images.map((img, index) => (
+            <View
+              key={index}
+              style={[
+                tw`mx-2 rounded-lg overflow-hidden`,
+                { width: width * 0.8, height: 200 },
+              ]}
+            >
+              <Image
+                source={img}
+                style={tw`w-full h-full`}
+                resizeMode="cover"
+              />
+            </View>
+          ))}
+        </ScrollView>
       </View>
     </ScrollView>
   );
