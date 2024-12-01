@@ -20,6 +20,7 @@ import RegisterPecesScreen from './screens/RegisterPecesSreen';
 import CollectionPeces from './screens/CollectionPeces';
 import InformationGuppyScreen from './screens/InformationGuppyScreen';
 import InformationCosmicBlueScreen from './screens/InformationCosmicBlueScreen';
+import InformationBettaScreen from './screens/InformationBettaScreen';
 
 const Stack = createStackNavigator();
 
@@ -28,7 +29,7 @@ const AppNavigator = () => {
 
   return (
     <NavigationContainer theme={theme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack.Navigator initialRouteName="InformationCosmicBlue" >
+      <Stack.Navigator initialRouteName="InformationBetta" >
         <Stack.Screen name="inicio" component={InicioScreen} options={{ headerShown: false }} />
         <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
         <Stack.Screen name="Register" component={RegisterScreen} options={{ headerShown: false }}/>
@@ -49,6 +50,7 @@ const AppNavigator = () => {
 
         <Stack.Screen name="InformationGuppy" component={InformationGuppyScreen} options={{headerShown: false}}/>
         <Stack.Screen name="InformationCosmicBlue" component={InformationCosmicBlueScreen} options={{headerShown: false}}/>
+        <Stack.Screen name='InformationBetta' component={InformationBettaScreen} options={{headerShown: false}} />
         
       </Stack.Navigator>
     </NavigationContainer>
