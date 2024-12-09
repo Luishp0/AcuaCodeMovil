@@ -34,7 +34,7 @@ const HomeScreen = ({ navigation }) => {
         <InformacionPezScreen navigation={navigation} />
 
         {/* Componente 3: RegisterPecesScreen */}
-        <RegisterPecesScreen />
+        <RegisterPecesScreen navigation={navigation}/>
       </View>
     </View>
   );

@@ -30,7 +30,7 @@ const AppNavigator = () => {
 
   return (
     <NavigationContainer theme={theme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack.Navigator initialRouteName="InformationPlaty" >
+      <Stack.Navigator initialRouteName="inicio" >
         <Stack.Screen name="inicio" component={InicioScreen} options={{ headerShown: false }} />
         <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
         <Stack.Screen name="Register" component={RegisterScreen} options={{ headerShown: false }}/>
